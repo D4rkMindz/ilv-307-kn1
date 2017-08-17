@@ -1,0 +1,7 @@
+#For searchbots
+
+User-Agent: Googlebot-Image
+Disallow: /
+
+User-Agent: ia_archiver
+Disallow: /

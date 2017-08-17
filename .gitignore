@@ -1,0 +1,50 @@
+nbproject/
+.DS_STORE
+cache.properties
+.idea/
+
+composer.phar
+
+config/env.php
+
+#Ant configuration files
+config/ant.prod.properties
+config/ant.staging.properties
+config/ant.test.properties
+
+#Ant configuration files
+!ant.*
+ant.*
+!ant.example.*
+
+#Project dependencies
+!vendor/
+vendor/*
+!vendor/.htaccess
+
+#Complete build folder
+build/
+
+#Complete tmp/ folder except
+#.htaccess file,
+!tmp/
+tmp/*
+!tmp/.htaccess
+#cache/ folder with empty file
+!tmp/cache/
+tmp/cache/*
+!tmp/cache/empty
+#logs/ folder with empty file
+!tmp/logs/
+tmp/logs/*
+!tmp/logs/empty
+
+#Complete files/ folder except
+#.htaccess file,
+!files/
+files/*
+!files/.htaccess
+
+#Prod database sql
+docs/contact_form.sql
+tmp/cache/

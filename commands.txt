@@ -1,0 +1,8 @@
+#Debug with PHPStorm
+SET XDEBUG_CONFIG=idekey=PHPSTORM
+
+#PHPUnit test
+ant phpunit
+
+#PHPUnit coverage test
+ant phpunit-coverage
