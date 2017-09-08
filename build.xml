@@ -150,7 +150,7 @@
         <delete dir="${build_dir}/master/vendor/symfony/translation/Tests"/>
     </target>
 
-    <target name="phpstan" description="DbBlockedUsersTest code for errors">
+    <target name="phpstan" description="Test code for errors">
         <mkdir dir="${basedir}/build"/>
         <get src="https://github.com/phpstan/phpstan/releases/download/0.7/phpstan-0.7.phar"
              dest="${basedir}/build/phpstan.phar"
@@ -178,11 +178,24 @@
         </apply>
     </target>
 
+    <target name="doc8" description="Docblock check">
+        <exec executable="${basedir}/vendor/bin/phpdoccheck.bat" failonerror="true">
+            <arg line="-d ${basedir}/src"/>
+        </exec>
+    </target>
+
+    <target name="validate" description="Execute all tests">
+        <antcall target="php-lints"/>
+        <antcall target="doc8"/>
+        <antcall target="phpstan"/>
+    </target>
+
     <target name="phpunit" description="Run unit tests with PHPUnit">
-        <exec executable="${basedir}/vendor/bin/phpunit${ext}" searchpath="true" resolveexecutable="true" failonerror="true" taskname="phpunit">
+        <exec executable="${basedir}/vendor/bin/phpunit${ext}" searchpath="true" resolveexecutable="true"
+              failonerror="true" taskname="phpunit">
             <arg value="-v"/>
-            <arg value="--configuration" />
-            <arg path="${basedir}/phpunit.xml" />
+            <arg value="--configuration"/>
+            <arg path="${basedir}/phpunit.xml"/>
         </exec>
     </target>
 
@@ -198,15 +211,16 @@
     </target>
 
     <target name="phpunit-coverage" description="Run unit tests with PHPUnit with coverage">
-        <delete dir="${basedir}/build/coverage" />
-        <mkdir dir="${basedir}/build/coverage" />
-        <exec executable="${basedir}/vendor/bin/phpunit${ext}" searchpath="true" resolveexecutable="true" failonerror="true" taskname="phpunit-coverage">
-            <arg value="--configuration" />
-            <arg path="${basedir}/phpunit.xml" />
-            <arg value="--coverage-clover" />
-            <arg path="${basedir}/build/logs/clover.xml" />
-            <arg value="--coverage-html" />
-            <arg path="${basedir}/build/coverage" />
+        <delete dir="${basedir}/build/coverage"/>
+        <mkdir dir="${basedir}/build/coverage"/>
+        <exec executable="${basedir}/vendor/bin/phpunit${ext}" searchpath="true" resolveexecutable="true"
+              failonerror="true" taskname="phpunit-coverage">
+            <arg value="--configuration"/>
+            <arg path="${basedir}/phpunit.xml"/>
+            <arg value="--coverage-clover"/>
+            <arg path="${basedir}/build/logs/clover.xml"/>
+            <arg value="--coverage-html"/>
+            <arg path="${basedir}/build/coverage"/>
         </exec>
     </target>
 

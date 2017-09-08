@@ -234,3 +234,22 @@ function view()
     }
     return $engine;
 }
+
+/**
+ * Get OAuth2.0 Server.
+ *
+ * @return \OAuth2\Server
+ */
+function oauth2_server(){
+    $oauth2Server = container()->get('oauth2Server');
+    if (!$oauth2Server){
+        $conf=config();
+        $dsn ='mysql:dbname=' . $conf->get('db.database') . ';host=localhost';
+        $storage = new \OAuth2\Storage\Pdo(['dsn'=>$dsn, 'username'=> $conf->get('db.username'), 'password'=> $conf->get('db.password')]);
+        $oauth2Server = new \OAuth2\Server($storage);
+        $oauth2Server->addGrantType(new \OAuth2\GrantType\ClientCredentials($storage));
+        $oauth2Server->addGrantType(new \OAuth2\GrantType\AuthorizationCode($storage));
+        container()->set('oauth2Server', $oauth2Server);
+    }
+    return $oauth2Server;
+}

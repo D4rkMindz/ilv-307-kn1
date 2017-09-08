@@ -1,49 +1,52 @@
 {
-  "require": {
-    "cakephp/database": "^3.3",
-    "guzzlehttp/guzzle": "^6.3",
-    "league/plates": "^3.1",
-    "matthiasmullie/minify": "^1.3",
-    "mikey179/vfsStream": "^1.6",
-    "monolog/monolog": "^1.21",
-    "odan/config": "^0.1.0",
-    "odan/phinx-migrations-generator": "^1.0",
-    "odan/plates-data-extension": "*",
-    "php-http/guzzle6-adapter": "^1.1",
-    "phpmailer/phpmailer": "^5.2",
-    "robmorgan/phinx": "^0.8.0",
-    "symfony/cache": "^3.2",
-    "symfony/http-foundation": "^3.2",
-    "symfony/routing": "^3.2",
-    "symfony/translation": "^3.2",
-    "zendframework/zend-filter": "^2.7",
-    "zendframework/zend-hydrator": "^2.2",
-    "zendframework/zend-servicemanager": "^3.3"
-  },
-  "require-dev": {
-    "phpunit/dbunit": "^3.0",
-    "phpunit/phpunit": "6.0"
-  },
-  "scripts": {
-    "test": "phpunit",
-    "check-style": "phpcs -p --standard=PSR2 --runtime-set ignore_errors_on_exit 1 --runtime-set ignore_warnings_on_exit 1 src tests",
-    "fix-style": "phpcbf -p --standard=PSR2 --runtime-set ignore_errors_on_exit 1 --runtime-set ignore_warnings_on_exit -n --no-patch 1 src tests"
-  },
-  "autoload": {
-    "psr-4": {
-      "App\\": "src"
+    "require": {
+        "bshaffer/oauth2-server-httpfoundation-bridge": "^1.3",
+        "bshaffer/oauth2-server-php": "^1.9",
+        "cakephp/database": "^3.3",
+        "guzzlehttp/guzzle": "^6.3",
+        "league/plates": "^3.1",
+        "matthiasmullie/minify": "^1.3",
+        "mikey179/vfsStream": "^1.6",
+        "monolog/monolog": "^1.21",
+        "odan/config": "^0.1.0",
+        "odan/phinx-migrations-generator": "^1.0",
+        "odan/plates-data-extension": "*",
+        "php-http/guzzle6-adapter": "^1.1",
+        "phpmailer/phpmailer": "^5.2",
+        "robmorgan/phinx": "^0.8.0",
+        "symfony/cache": "^3.2",
+        "symfony/http-foundation": "^3.2",
+        "symfony/routing": "^3.2",
+        "symfony/translation": "^3.2",
+        "zendframework/zend-filter": "^2.7",
+        "zendframework/zend-hydrator": "^2.2",
+        "zendframework/zend-servicemanager": "^3.3"
     },
-    "files": [
-      "lib/services.php",
-      "lib/util.php"
-    ]
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "App\\Test\\": "tests"
+    "require-dev": {
+        "block8/php-docblock-checker": "^1.3",
+        "phpunit/dbunit": "^3.0",
+        "phpunit/phpunit": "6.0"
+    },
+    "scripts": {
+        "test": "phpunit",
+        "check-style": "phpcs -p --standard=PSR2 --runtime-set ignore_errors_on_exit 1 --runtime-set ignore_warnings_on_exit 1 src tests",
+        "fix-style": "phpcbf -p --standard=PSR2 --runtime-set ignore_errors_on_exit 1 --runtime-set ignore_warnings_on_exit -n --no-patch 1 src tests"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src"
+        },
+        "files": [
+            "lib/services.php",
+            "lib/util.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "App\\Test\\": "tests"
+        }
+    },
+    "config": {
+        "sort-packages": true
     }
-  },
-  "config": {
-    "sort-packages": true
-  }
 }

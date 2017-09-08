@@ -20,7 +20,7 @@ cache:
 before_script:
   - travis_retry composer self-update
   - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-dist
-  - cp config/env.example.php config/env.php
+  - cp config/env.php config/env.php
   - mysql -e 'create database contact_form_test;'
   - cd $TRAVIS_BUILD_DIR
 

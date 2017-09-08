@@ -21,6 +21,13 @@ class AppController
 
     protected $session;
 
+    /**
+     * AppController constructor.
+     *
+     * @param Request $request
+     * @param Response $response
+     * @param Session $session
+     */
     public function __construct(Request $request, Response $response, Session $session)
     {
         $this->request = $request;
@@ -31,16 +38,16 @@ class AppController
     /**
      * Call Action.
      *
-     * @param               $method
-     * @param Request|null $request
-     * @param Response|null $response
+     * @param string $method
+     * @param Request $request
+     * @param Response $response
      *
-     * @return mixed|null|RedirectResponse
+     * @return Response|JsonResponse|RedirectResponse
      */
-    public function callAction($method, Request $request, Response $response)
+    public function callAction(string $method, Request $request, Response $response)
     {
         $newResponse = $this->beforeAction($request);
-        if ($newResponse instanceof Response) {
+        if ($newResponse instanceof Response || $newResponse instanceof JsonResponse) {
             return $newResponse;
         }
 
@@ -52,7 +59,7 @@ class AppController
     /**
      * Before Action.
      *
-     * @param Request|null $request
+     * @param Request $request
      *
      * @return null|RedirectResponse
      */
@@ -173,7 +180,7 @@ class AppController
     /**
      * Create JSONRPC Object
      *
-     * @param $result array|String
+     * @param array|string $result
      * @param mixed $status
      *
      * @return JsonResponse

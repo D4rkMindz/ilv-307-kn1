@@ -4,9 +4,9 @@ use MatthiasMullie\Minify;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouteCollection;
-use Symfony\Component\Routing\Matcher\UrlMatcher;
 
 /**
  * Check if blank
@@ -59,7 +59,7 @@ function asset($file)
     $minify = $config->get('assets')['minimize'];
     foreach ((array)$file as $fileNew) {
         $fileName = $fileNew;
-        if (!file_exists($fileNew)){
+        if (!file_exists($fileNew)) {
             $fileName = $view->make($fileNew)->path();
         }
         $fileType = pathinfo($fileName, PATHINFO_EXTENSION);
@@ -173,6 +173,7 @@ function in_array_recursive($needle, array $haystack, bool $strict = false): boo
 function __($message)
 {
     $translated = translator()->trans($message);
+
     return $translated;
 }
 
@@ -226,6 +227,8 @@ function dispatch(Request $request, Response $response, RouteCollection $routes)
 
     try {
         // Find matching route
+        $request->attributes->set('_auth', true);
+
         $pathInfo = $request->getPathInfo();
         $context = new RequestContext();
         $requestContext = $context->fromRequest($request);

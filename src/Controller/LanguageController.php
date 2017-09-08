@@ -13,7 +13,7 @@ class LanguageController extends AppController
     /**
      * Before action.
      *
-     * @param Request|null $request
+     * @param Request $request
      * @return mixed
      */
     public function beforeAction(Request $request = null/*, Response $response = null*/)

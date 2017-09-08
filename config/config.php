@@ -15,6 +15,7 @@ $bag = config();
 
 $config = array();
 
+$config['oauth']['server'] = '';
 $config['assets']['cachePath'] = __DIR__ . '/../tmp/cache/';
 $config['assets']['minimize'] = false;
 
