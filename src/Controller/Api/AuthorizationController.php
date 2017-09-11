@@ -2,12 +2,13 @@
 
 namespace App\Controller\Api;
 
+use App\Controller\AppController;
 use OAuth2\HttpFoundationBridge\Request;
 
 /**
  * Class AuthorizationController
  */
-class AuthorizationController extends ApiController
+class AuthorizationController extends AppController
 {
     /**
      * Get Auth.
@@ -16,6 +17,6 @@ class AuthorizationController extends ApiController
     {
         $server = oauth2_server();
         $req = Request::createFromGlobals();
-        $server->handleTokenRequest($req)->send();
+        return $server->handleTokenRequest($req)->send();
     }
 }

@@ -10,6 +10,9 @@ ant phpunit-coverage
 #CURL API get auth debug
 curl -u client:password https://localhost/ionic-api/authorize -d "grant_type=client_credentials" -k -b XDEBUG_SESSION=PHPSTORM
 
-#CURL API get resource debug (/resource == /users | /tasks | etc)
-curl https://localhost/ionic-api/resource -d "access_token=TOKEN" -k -b XDEBUG_SESSION=PHPSTORM
+#CURL API post users debug
+curl --request POST  https://localhost/ionic-api/users -k -b XDEBUG_SESSION=PHPSTORM -d "access_token=TOKEN&password=1234&postcode=4313&addres
+s=Ulmenstrasse+24&firstName=Peeta&lastName=Baelish&username=PeetaBaelish"
 
+#CURL API post tasks debug
+curl --request POST  https://localhost/ionic-api/users -k -b XDEBUG_SESSION=PHPSTORM -d "access_token=TOKEN&title=A+New+Task&description=This+Task+really+needs+to+be+solved&dueDate=2017-12-23&24:00:00"

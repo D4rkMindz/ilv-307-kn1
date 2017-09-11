@@ -18,8 +18,24 @@ class UserTable extends AppTable
     public function existsUsername(string $username): bool
     {
         $query = $this->newSelect();
-        $query->select('username')->where(['username'=> $username]);
+        $query->select(['username', 'deleted'])->where(['username' => $username, 'deleted'=> false]);
         $row = $query->execute()->fetch();
+
+        return !empty($row);
+    }
+
+    /**
+     * Check if ID exists
+     *
+     * @param int $id - user ID
+     * @return bool true if ID exists
+     */
+    public function existsId(int $id): bool
+    {
+        $query = $this->newSelect();
+        $query->select(['id', 'deleted'])->where(['id' => $id, 'deleted'=> false]);
+        $row = $query->execute()->fetch();
+
         return !empty($row);
     }
 
@@ -46,25 +62,27 @@ class UserTable extends AppTable
                 'roles' => [
                     'table' => 'roles',
                     'type' => 'INNER',
-                    'conditions' => 'roles.id = users.role_id'
+                    'conditions' => 'roles.id = users.role_id',
                 ],
                 'people' => [
-                    'table'=> 'people',
+                    'table' => 'people',
                     'type' => 'INNER',
-                    'conditions' => 'people.id = users.person_id'
+                    'conditions' => 'people.id = users.person_id',
                 ],
                 'postcodes' => [
-                    'table'=> 'postcodes',
-                    'type'=> 'INNER',
-                    'conditions' => 'postcodes.id = people.postcode_id'
-                ]
+                    'table' => 'postcodes',
+                    'type' => 'INNER',
+                    'conditions' => 'postcodes.id = people.postcode_id',
+                ],
             ])
-            ->where(['users.id' => $userId])
+            ->where(['users.id' => $userId, 'users.deleted'=> false])
             ->limit(1);
         $row = $query->execute()->fetch();
-        if (!$row){
+
+        if (!$row) {
             return [];
         }
+
         return $row;
     }
 }

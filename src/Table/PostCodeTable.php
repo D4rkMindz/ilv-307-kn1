@@ -18,8 +18,24 @@ class PostCodeTable extends AppTable
     public function existsPostCode(int $postCode): bool
     {
         $query = $this->newSelect();
-        $query->select('number')->where(['number'=> $postCode]);
+        $query->select('number')->where(['number' => $postCode, 'deleted'=> false]);
         $row = $query->execute()->fetch();
+
         return !empty($row);
+    }
+
+    /**
+     * Get ID by postcode
+     *
+     * @param int $postCode
+     * @return int
+     */
+    public function getIdByPostCode(int $postCode): int
+    {
+        $query = $this->newSelect();
+        $query->select('id')->where(['number' => $postCode, 'deleted'=> false]);
+        $row = $query->execute()->fetch();
+
+        return !empty($row) ? $row[0] : 0;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api;
 
+use App\Service\User\UserService;
 use App\Table\UserTable;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -46,13 +47,22 @@ class UserController extends ApiController
     /**
      * Add new User.
      *
+     * Required array keys:
+     *
+     * string   username
+     * string   firstName
+     * string   lastName
+     * string   address
+     * int      postcode
+     *
      * @return JsonResponse
      */
     public function addUser(): JsonResponse
     {
-        $data = $this->request->getContent();
-
-        return $this->json([]);
+        $data = $this->getJsonRequest(request());
+        $userService = new UserService();
+        $response = $userService->addNewUser($data);
+        return $this->json($response);
     }
 
     /**

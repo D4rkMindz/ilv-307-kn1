@@ -18,6 +18,15 @@ use Symfony\Component\Translation\MessageSelector;
 use Symfony\Component\Translation\Loader\MoFileLoader;
 use Symfony\Component\Routing\Route;
 
+const SUPER_ADMIN = 1;
+const SUPER_USER = 2;
+const ADMIN_PLUS = 4;
+const ADMIN = 8;
+const USER_PLUS = 16;
+const USER = 32;
+const GUEST_PLUS = 64;
+const GUEST = 128;
+
 function container()
 {
     static $container = null;

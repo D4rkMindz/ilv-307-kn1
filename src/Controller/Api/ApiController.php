@@ -3,7 +3,6 @@
 namespace App\Controller\Api;
 
 use App\Controller\AppController;
-use OAuth2\HttpFoundationBridge\Request as HttpRequest;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -23,7 +22,8 @@ class ApiController extends AppController
         $auth = $request->attributes->get('_auth');
         if ($auth) {
             $server = oauth2_server();
-            if (!$server->verifyResourceRequest(HttpRequest::createFromGlobals())) {
+            $req = \OAuth2\HttpFoundationBridge\Request::createFromGlobals();
+            if (!$server->verifyResourceRequest($req)) {
                 $response = $server->getResponse();
 
                 return $this->json([

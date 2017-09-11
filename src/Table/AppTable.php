@@ -56,26 +56,27 @@ class AppTable
      * Insert into database.
      *
      * @param array $row with data to insertUser into database
-     * @return StatementInterface
+     * @return int last inserted ID
      */
-    public function insert(array $row): StatementInterface
+    public function insert(array $row): int
     {
-        return $this->db->insert($this->table, $row);
+        return (int) $this->db->insert($this->table, $row)->lastInsertId();
     }
 
     /**
      * Update database
      *
-     * @param string $where should be the id
+     * @param string $whereValue - value to match with the where attribute
+     * @param string $whereAttribute - attribute to check
      * @param array $row
      * @return StatementInterface
      */
-    public function update(array $row, string $where): StatementInterface
+    public function update(array $row, string $whereValue, string $whereAttribute = 'id'): StatementInterface
     {
         $query = $this->db->newQuery();
         $query->update($this->table)
             ->set($row)
-            ->where(['id' => $where]);
+            ->where([$whereAttribute => $whereValue]);
 
         return $query->execute();
     }

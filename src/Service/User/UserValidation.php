@@ -25,7 +25,7 @@ class UserValidation
      * @param array $data
      * @return ValidationContext
      */
-    public function validateUser(array $data): ValidationContext
+    public function validate(array $data): ValidationContext
     {
         $validationContext = new ValidationContext(__('Please check your data'));
         $this->validateUsername($data['username'], $validationContext);
