@@ -20,7 +20,6 @@ class AppService
     {
         $user = $this->getUser($accessToken);
 
-        // TODO: adjust user access level
         if ($user['level'] >= $action) {
             return false;
         }
