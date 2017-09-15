@@ -59,9 +59,10 @@ class UserController extends ApiController
      */
     public function addUser(): JsonResponse
     {
-        $data = $this->getJsonRequest(request());
+        $data = $this->getJsonRequest($this->request);
         $userService = new UserService();
         $response = $userService->addNewUser($data);
+
         return $this->json($response);
     }
 
@@ -73,9 +74,12 @@ class UserController extends ApiController
     public function updateUser(): JsonResponse
     {
         $userId = $this->request->attributes->get('user_id');
+        $data = $this->getJsonRequest($this->request);
 
-        //TODO
-        return $this->returnError('under construction', 'ERROR_ATM_NOT_AVAILABLE', 500);
+        $userService = new UserService();
+        $response = $userService->updatedUser($data, $userId);
+
+        return $this->json($response);
     }
 
     /**
@@ -86,8 +90,11 @@ class UserController extends ApiController
     public function deleteUser(): JsonResponse
     {
         $userId = $this->request->attributes->get('user_id');
+        $data = $this->getJsonRequest($this->request);
 
-        //TODO
+        $userService = new UserService();
+        $userService->deleteUser($userId, $data['access_token']);
+
         return $this->returnError('under construction', 'ERROR_ATM_NOT_AVAILABLE', 500);
     }
 }
