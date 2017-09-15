@@ -65,6 +65,8 @@ class AppController
      */
     protected function beforeAction(Request $request = null/*, Response $response = null*/)
     {
+        header("Access-Control-Allow-Origin: *");
+        header("Access-Control-Allow-Headers: access-control-allow-origin,content-type,authorization");
         $auth = $request->attributes->get("_auth");
 
         if ($auth !== false && !$this->validateSession()) {
@@ -178,7 +180,7 @@ class AppController
     }
 
     /**
-     * Create JSONRPC Object
+     * Create JSON-RPC Object
      *
      * @param array|string $result
      * @param mixed $status
@@ -187,6 +189,10 @@ class AppController
      */
     protected function json($result, $status = 200)
     {
+        if (array_key_exists('status', $result)) {
+            $status = $result['status'] == 'error' ? 422 : 200;
+        }
+
         return new JsonResponse($result, $status);
     }
 }
