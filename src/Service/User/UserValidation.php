@@ -25,7 +25,7 @@ class UserValidation
      * @param array $data
      * @return ValidationContext
      */
-    public function validate(array $data): ValidationContext
+    public function validateInsert(array $data): ValidationContext
     {
         $validationContext = new ValidationContext(__('Please check your data'));
         $this->validateUsername($data['username'], $validationContext);
@@ -35,6 +35,72 @@ class UserValidation
         $this->validatePostcode($data['postcode'], $validationContext);
 
         return $validationContext;
+    }
+
+    /**
+     * Validate user data for update.
+     *
+     * Required array keys:
+     *
+     * int      userId
+     * int      personId
+     *
+     * Optional array keys (at least one):
+     *
+     * string   username
+     * string   firstName
+     * string   lastName
+     * string   address
+     * int      postcode
+     *
+     * @param array $data
+     * @param int $userId
+     * @return ValidationContext
+     */
+    public function validateUpdate(array $data, int $userId): ValidationContext
+    {
+        $validationContext = new ValidationContext(__('Please check your data'));
+        if (is_numeric($userId)) {
+            $validationContext->setError('userId', __('required'));
+        } else {
+            $this->existsUserById($userId, $validationContext);
+        }
+
+        if (!array_key_exists('personId', $data)) {
+            $validationContext->setError('personId', __('required'));
+        } else {
+            $this->existsUserById($data['id'], $validationContext);
+        }
+
+        if (array_key_exists('username', $data)) {
+            $this->validateUsername($data['username'], $validationContext);
+        }
+
+        if (array_key_exists('firstName', $data)) {
+            $this->validateUsername($data['firstName'], $validationContext);
+        }
+
+        if (array_key_exists('lastName', $data)) {
+            $this->validateUsername($data['lastName'], $validationContext);
+        }
+
+        if (array_key_exists('address', $data)) {
+            $this->validateAddress($data['address'], $validationContext);
+        }
+
+        if (array_key_exists('postcode', $data)) {
+            $this->validatePostcode($data['postcode'], $validationContext);
+        }
+
+        return $validationContext;
+    }
+
+    protected function existsUserById(int $userId, ValidationContext $validationContext)
+    {
+        $userTable = new UserTable();
+        if (!$userTable->existsId($userId)) {
+            $validationContext->setError('id', __('User does not exist'));
+        }
     }
 
     /**
@@ -97,7 +163,7 @@ class UserValidation
     /**
      * Validate the length of a value
      *
-     * @param string $value - value to validate
+     * @param string $value - value to validateAddTask
      * @param string $type - type of the value (e.g. first_name)
      * @param ValidationContext $validationContext
      * @param int $min - default 3, optional, minimum length

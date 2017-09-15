@@ -28,14 +28,14 @@ class UserService extends AppService
      */
     public function addNewUser(array $data): array
     {
-        $userValidation = new UserValidation();
-        $validationContext = $userValidation->validate($data);
-        if (!$validationContext->success()){
-            return $validationContext->toArray();
+        if (!$this->hasPermission($data['access_token'], ADMIN)) {
+            return ['status' => 'error', 'error' => 'ACTION_NOT_ALLOWED'];
         }
 
-        if(!$this->hasPermission($data['access_token'], ADMIN)){
-            return ['status'=> 'error', 'error'=> 'ACTION_NOT_ALLOWED'];
+        $userValidation = new UserValidation();
+        $validationContext = $userValidation->validateInsert($data);
+        if (!$validationContext->success()) {
+            return ['status' => 'error', 'message' => $validationContext->toArray()];
         }
 
         $user = $this->getUser($data['access_token']);
@@ -48,7 +48,71 @@ class UserService extends AppService
         $userTable = new UserTable();
         $userId = $userTable->insert($userRow);
 
-        return ['status' => 'success', 'user_id'=> $userId];
+        return ['status' => 'success', 'user_id' => $userId];
+    }
+
+    /**
+     * Update user.
+     *
+     * @param array $data
+     * @param int $userId
+     * @return array
+     */
+    public function updatedUser(array $data, int $userId): array
+    {
+        if (!$this->hasPermission($data['access_token'], USER_PLUS)) {
+            return ['status' => 'error', 'error' => 'ACTION_NOT_ALLOWED'];
+        }
+
+        $userValidation = new UserValidation();
+        $validationContext = $userValidation->validateUpdate($data, $userId);
+
+        if (!$validationContext->success()) {
+            return ['status' => 'error', 'message' => $validationContext->toArray()];
+        }
+
+        $response = ['status' => 'success'];
+
+        $user = $this->getUser($data['access_token']);
+        $userRow = $this->mapUserUpdateRow($data, $user);
+        $personRow = $this->mapPersonUpdateRow($data, $user);
+
+        if ($personRow['update']) {
+            unset($personRow['update']);
+            $peopleTable = new PeopleTable();
+            $peopleTable->update($personRow, $data['personId']);
+            $response['person_id'] = $data['personId'];
+        }
+
+        if ($userRow['update']) {
+            unset($userRow['update']);
+            $userTable = new UserTable();
+            $userTable->update($userRow, $userId);
+            $response['user_id'] = $userId;
+        }
+
+        return $response;
+    }
+
+    /**
+     * Delete user.
+     *
+     * @param int $userId
+     * @param string $accessToken
+     * @return array
+     */
+    public function deleteUser(int $userId, string $accessToken): array
+    {
+        if (!$this->hasPermission($accessToken, ADMIN)) {
+            return ['status' => 'error', 'error' => 'ACTION_NOT_ALLOWED'];
+        }
+
+        $executor = $this->getUser($accessToken);
+
+        $userTable = new UserTable();
+        $userTable->deleteUser($userId, $executor['id']);
+
+        return ['status' => 'success', 'user_id' => $userId];
     }
 
     /**
@@ -63,7 +127,7 @@ class UserService extends AppService
     {
         $userRow = [
             'role_id' => $user['role_id'],
-            'person_id'=> $personId,
+            'person_id' => $personId,
             'username' => $data['username'],
             'password' => password_hash($data['password'], PASSWORD_DEFAULT),
             'created' => date('Y-m-d H:i:s'),
@@ -85,13 +149,86 @@ class UserService extends AppService
         $postCodeTable = new PostCodeTable();
         $postCodeId = $postCodeTable->getIdByPostCode($data['postcode']);
         $personRow = [
-            'postcode_id'=> $postCodeId,
-            'first_name'=> $data['firstName'],
-            'last_name'=> $data['lastName'],
-            'address'=> $data['address'],
-            'created'=> date('Y-m-d H:i:s'),
-            'created_by'=>$user['id'],
+            'postcode_id' => $postCodeId,
+            'first_name' => $data['firstName'],
+            'last_name' => $data['lastName'],
+            'address' => $data['address'],
+            'created' => date('Y-m-d H:i:s'),
+            'created_by' => $user['id'],
         ];
+
+        return $personRow;
+    }
+
+    /**
+     * Map user row for update.
+     *
+     * @param array $data
+     * @param $user
+     * @return array
+     */
+    protected function mapUserUpdateRow(array $data, $user): array
+    {
+        $update = false;
+        $userRow = [
+            'modified' => date('Y-m-d H:i:s'),
+            'modified_by' => $user['id'],
+        ];
+
+        if (array_key_exists('username', $data)) {
+            $userRow['username'] = $data['username'];
+            $update = true;
+        }
+
+        if (array_key_exists('password', $data)) {
+            $userRow['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+            $update = true;
+        }
+
+        $userRow['update'] = $update;
+
+        return $userRow;
+    }
+
+    /**
+     * Map person update row.
+     *
+     * @param array $data
+     * @param array $user
+     * @return array
+     */
+    protected function mapPersonUpdateRow(array $data, array $user): array
+    {
+        $update = false;
+        $personRow = [
+            'modified' => date('Y-m-d H:i:s'),
+            'modified_by' => $user['id'],
+        ];
+
+        if (array_key_exists('postcode', $data)) {
+            $postCodeTable = new PostCodeTable();
+            $postCodeId = $postCodeTable->getIdByPostCode($data['postcode']);
+            $personRow['postcode'] = $postCodeId;
+            $update = true;
+        }
+
+        if (array_key_exists('firstName', $data)) {
+            $personRow['first_name'] = $data['firstName'];
+            $update = true;
+        }
+
+        if (array_key_exists('lastName', $data)) {
+            $personRow['last_name'] = $data['lastName'];
+            $update = true;
+        }
+
+        if (array_key_exists('address', $data)) {
+            $personRow['address'] = $data['address'];
+            $update = true;
+        }
+
+        $personRow['update'] = $update;
+
         return $personRow;
     }
 }

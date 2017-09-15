@@ -3,8 +3,12 @@
 namespace App\Service\Task;
 
 use App\Table\TaskTable;
+use App\Table\UserTable;
 use App\Util\ValidationContext;
 
+/**
+ * Class TaskValidation
+ */
 class TaskValidation
 {
     /**
@@ -13,6 +17,7 @@ class TaskValidation
      * Required array keys:
      *
      * string   access_token
+     * int      userId
      * string   title
      * string   description
      * datetime dueDate (Y-m-d H:i:s)
@@ -20,10 +25,12 @@ class TaskValidation
      * @param array $data
      * @return ValidationContext
      */
-    public function validate(array $data): ValidationContext
+    public function validateAddTask(array $data): ValidationContext
     {
         $validationContext = new ValidationContext(__('Please check your data'));
 
+        $this->existsTaskByTitle($data['title'], $validationContext);
+        $this->validateUser($data['userId'], $validationContext);
         $this->validateLength($data['title'], 'title', $validationContext, 5, 45);
         $this->validateLength($data['description'], 'description', $validationContext, 10, 65535);
         $this->validateDueDate($data['dueDate'], $validationContext);
@@ -31,9 +38,118 @@ class TaskValidation
         return $validationContext;
     }
 
-    public function existsTask($title, $validationContext)
+    /**
+     * Validate task update data.
+     *
+     * Required array keys:
+     *
+     * int      id
+     * int      userId
+     *
+     * Optional array keys (at least one):
+     *
+     * string   access_token
+     * int      userId
+     * string   title
+     * string   description
+     * datetime dueDate (Y-m-d H:i:s)
+     *
+     * @param array $data
+     * @return ValidationContext
+     */
+    public function validateUpdateTask(array $data): ValidationContext
+    {
+        $updated = false;
+        $validationContext = new ValidationContext(__('Please check your data'));
+
+        if (!array_key_exists('id', $data)) {
+            $validationContext->setError('id', __('required'));
+        } else {
+            $this->existsTaskById($data['id'], $validationContext);
+        }
+
+        if (!array_key_exists('userId', $data)) {
+            $validationContext->setError('userId', __('required'));
+        } else {
+            $this->validateUser($data['userId'], $validationContext);
+        }
+
+        if (array_key_exists('description', $data)) {
+            $this->validateLength($data['description'], 'description', $validationContext, 10, 65535);
+            $updated = true;
+        }
+
+        if (array_key_exists('title', $data)) {
+            $this->validateLength($data['title'], 'title', $validationContext, 5, 45);
+            $this->existsTaskByTitle($data['title'], $validationContext, true);
+            $updated = true;
+        }
+
+        if (array_key_exists('dueDate', $data)) {
+            $this->validateDueDate($data['dueDate'], $validationContext);
+            $updated = true;
+        }
+
+        if (!$updated) {
+            $validationContext->setError('main', __('No valid array keys found'));
+        }
+
+        return $validationContext;
+    }
+
+    /**
+     * Validate user.
+     *
+     * @param int $userId
+     * @param ValidationContext $validationContext
+     * @return void
+     */
+    protected function validateUser(int $userId, ValidationContext $validationContext)
+    {
+        if (!is_numeric($userId)) {
+            $validationContext->setError('user', __('Impossible user id'));
+        }
+
+        $userTable = new UserTable();
+        if (!$userTable->existsId($userId)){
+            $validationContext->setError('user', __('User does not exist'));
+        }
+    }
+
+    /**
+     * Check if task exists.
+     *
+     * @param string $title - task title
+     * @param ValidationContext $validationContext
+     * @param bool $update - true if validateInsert data is for an update
+     * @return void
+     */
+    protected function existsTaskByTitle(string $title, ValidationContext $validationContext, bool $update = false)
     {
         $taskTable = new TaskTable();
+        $taskFound = $taskTable->existsTaskByTile($title);
+        if ($taskFound && !$update) {
+            $validationContext->setError('tasks', __('Task already exists'));
+        }
+
+        if (!$taskFound && $update) {
+            $validationContext->setError('tasks', __('Task does not exist'));
+        }
+    }
+
+    /**
+     * Check if task exists.
+     *
+     * @param int $id - task ID
+     * @param ValidationContext $validationContext
+     * @return void
+     */
+    protected function existsTaskById(int $id, ValidationContext $validationContext)
+    {
+        $taskTable = new TaskTable();
+        if (!$taskTable->existsTask($id)) {
+            $validationContext->setError('tasks', __('Task does not exist'));
+        }
     }
 
     /**
@@ -43,7 +159,7 @@ class TaskValidation
      * @param ValidationContext $validationContext
      * @return void
      */
-    public function validateDueDate($dueDate, ValidationContext $validationContext)
+    protected function validateDueDate($dueDate, ValidationContext $validationContext)
     {
         if (empty($dueDate)) {
             $validationContext->setError('due_date', __('Please enter a due date'));
@@ -66,7 +182,7 @@ class TaskValidation
     /**
      * Validate the length of a value
      *
-     * @param string $value - value to validate
+     * @param string $value - value to validateAddTask
      * @param string $type - type of the value (e.g. first_name)
      * @param ValidationContext $validationContext
      * @param int $min - default 3, optional, minimum length

@@ -85,4 +85,26 @@ class UserTable extends AppTable
 
         return $row;
     }
+
+    /**
+     * Delete user.
+     *
+     * @param int $userId
+     * @param int $executorId
+     * @return bool
+     */
+    public function deleteUser(int $userId, int $executorId): bool
+    {
+        $row = [
+            'deleted' => true,
+            'deleted_at' => date('Y-m-d H:m:s'),
+            'deleted_by' => $executorId,
+        ];
+        $query = $this->db->newQuery();
+        $query->update($this->table)
+            ->set($row)
+            ->where(['id' => $userId]);
+
+        return (bool)$query->execute();
+    }
 }
