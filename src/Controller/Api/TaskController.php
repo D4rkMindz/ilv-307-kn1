@@ -4,7 +4,6 @@ namespace App\Controller\Api;
 
 use App\Service\Task\TaskService;
 use App\Table\TaskTable;
-use App\Table\UserTaskTable;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
@@ -20,8 +19,8 @@ class TaskController extends ApiController
     public function getTasks()
     {
         $userId = (int)$this->request->attributes->get('user_id');
-        $userTaskTable = new UserTaskTable();
-        $tasks = $userTaskTable->findAllTasks($userId);
+        $taskTable = new TaskTable();
+        $tasks = $taskTable->getAllTasks($userId);
 
         return $this->json($tasks);
     }
@@ -34,8 +33,8 @@ class TaskController extends ApiController
     public function getTask()
     {
         $taskId = (int)$this->request->attributes->get('task_id');
-        $userTaskTable = new TaskTable();
-        $task = $userTaskTable->getTask($taskId);
+        $userTable = new TaskTable();
+        $task = $userTable->getTask($taskId);
 
         return $this->json($task);
     }
@@ -54,7 +53,8 @@ class TaskController extends ApiController
      */
     public function createTask()
     {
-        $data = $this->getJsonRequest(request());
+        $data = $this->getJsonRequest($this->request);
+
         $taskService = new TaskService();
         $response = $taskService->addTask($data);
 
@@ -68,8 +68,14 @@ class TaskController extends ApiController
      */
     public function updateTask()
     {
-        //TODO
-        return $this->json([]);
+        $userId = (int)$this->request->attributes->get('user_id');
+        $taskId = (int)$this->request->attributes->get('task_id');
+        $data = $this->getJsonRequest($this->request);
+
+        $taskService = new TaskService();
+        $response = $taskService->updateTask($data, $userId, $taskId);
+
+        return $this->json($response);
     }
 
     /**
@@ -80,9 +86,45 @@ class TaskController extends ApiController
     public function deleteTask()
     {
         $taskId = (int)$this->request->attributes->get('task_id');
-        $taskTable = new TaskTable();
-        $taskTable->delete($taskId);
+        $data = $this->getJsonRequest($this->request);
 
-        return $this->json(['status' => 'success', 'deleted_task_id' => $taskId]);
+        $taskService = new TaskService();
+        $response = $taskService->deleteTask($taskId, $data['access_token']);
+
+        return $this->json($response);
+    }
+
+    /**
+     * Allocate task to user.
+     *
+     * @return JsonResponse
+     */
+    public function allocateTask()
+    {
+        $userId = (int)$this->request->attributes->get('user_id');
+        $taskId = (int)$this->request->attributes->get('task_id');
+        $data = $this->getJsonRequest($this->request);
+
+        $taskService = new TaskService();
+        $response = $taskService->allocateTaskTo($userId, $taskId, $data['access_token']);
+
+        return $this->json($response);
+    }
+
+    /**
+     * Deallocate task from user.
+     *
+     * @return JsonResponse
+     */
+    public function deallocateTask()
+    {
+        $userId = (int)$this->request->attributes->get('user_id');
+        $taskId = (int)$this->request->attributes->get('task_id');
+        $data = $this->getJsonRequest($this->request);
+
+        $taskService = new TaskService();
+        $response = $taskService->deallocateTask($userId, $taskId, $data['access_token']);
+
+        return $this->json($response);
     }
 }
