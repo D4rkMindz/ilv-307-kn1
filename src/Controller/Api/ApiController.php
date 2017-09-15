@@ -51,8 +51,8 @@ class ApiController extends AppController
     ): JsonResponse {
         $response = [
             'status' => 'ERROR_' . $statusCode,
-            'error' => $errorType,
-            'message' => $message,
+            'message' => $errorType,
+            'error' => $message,
         ];
 
         return $this->json($response, $statusCode);
