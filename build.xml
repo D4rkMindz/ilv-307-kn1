@@ -184,7 +184,7 @@
         </exec>
     </target>
 
-    <target name="validate" description="Execute all tests">
+    <target name="validateAddTask" description="Execute all tests">
         <antcall target="php-lints"/>
         <antcall target="doc8"/>
         <antcall target="phpstan"/>

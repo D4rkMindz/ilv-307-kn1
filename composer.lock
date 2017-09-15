@@ -3853,11 +3853,11 @@
                     "email": "bschussek@gmail.com"
                 }
             ],
-            "description": "Assertions to validate method input/output with nice error messages.",
+            "description": "Assertions to validateAddTask method input/output with nice error messages.",
             "keywords": [
                 "assert",
                 "check",
-                "validate"
+                "validateAddTask"
             ],
             "time": "2016-11-23T20:04:58+00:00"
         }
