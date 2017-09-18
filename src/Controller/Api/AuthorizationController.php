@@ -3,7 +3,7 @@
 namespace App\Controller\Api;
 
 use App\Controller\AppController;
-use OAuth2\HttpFoundationBridge\Request;
+use OAuth2\Request;
 
 /**
  * Class AuthorizationController

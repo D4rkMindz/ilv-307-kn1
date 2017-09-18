@@ -8,7 +8,7 @@ ant phpunit
 ant phpunit-coverage
 
 #CURL API get auth debug
-curl -u client:password https://localhost/ionic-api/authorize -d "grant_type=client_credentials" -k -b XDEBUG_SESSION=PHPSTORM
+curl -u 1:secret https://localhost/ionic-api/authorize -d "grant_type=client_credentials" -k -b XDEBUG_SESSION=PHPSTORM
 
 #CURL API post users debug
 curl --request POST  https://localhost/ionic-api/users -k -b XDEBUG_SESSION=PHPSTORM -d "access_token=TOKEN&password=1234&postcode=4313&addres
