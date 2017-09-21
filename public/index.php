@@ -4,6 +4,9 @@
  *
  * @author  Björn Pfoster
  */
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: access-control-allow-origin,content-type,authorization");
+
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 require_once __DIR__ . "/../config/bootstrap.php";

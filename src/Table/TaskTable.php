@@ -17,8 +17,40 @@ class TaskTable extends AppTable
      */
     public function getTask(int $taskId): array
     {
+        $fields = [
+            $this->table . '.id',
+            $this->table . '.user_id',
+            $this->table . '.title',
+            $this->table . '.description',
+            $this->table . '.due_date',
+            $this->table . '.created',
+            $this->table . '.created_by',
+            $this->table . '.modified',
+            $this->table . '.modified_by',
+            $this->table . '.deleted',
+            $this->table . '.deleted_by',
+            $this->table . '.deleted_at',
+            $this->table . '.resolved',
+            $this->table . '.resolved_by',
+            'status' => 'status.name',
+            'statusColor' => 'status.color',
+            'users.username',
+        ];
         $query = $this->newSelect();
-        $query->select('*')->where(['id' => $taskId, 'deleted' => false]);
+        $query->select($fields)
+            ->join([
+                [
+                    'table' => 'status',
+                    'type' => 'INNER',
+                    'conditions' => 'status.id = ' . $this->table . '.status_id',
+                ],
+                [
+                    'table' => 'users',
+                    'type' => 'INNER',
+                    'conditions' => 'users.id = ' . $this->table . '.user_id',
+                ],
+            ])
+            ->where([$this->table . '.id' => $taskId, $this->table . '.deleted' => false]);
         $row = $query->execute()->fetch('assoc');
 
         return $row;
@@ -32,8 +64,32 @@ class TaskTable extends AppTable
      */
     public function getAllTasks(int $userId): array
     {
+        $fields = [
+            $this->table . '.id',
+            $this->table . '.user_id',
+            $this->table . '.title',
+            $this->table . '.description',
+            $this->table . '.due_date',
+            $this->table . '.created',
+            $this->table . '.created_by',
+            $this->table . '.modified',
+            $this->table . '.modified_by',
+            $this->table . '.deleted',
+            $this->table . '.deleted_by',
+            $this->table . '.deleted_at',
+            $this->table . '.resolved',
+            $this->table . '.resolved_by',
+            'status' => 'status.name',
+            'statusColor' => 'status.color',
+        ];
         $query = $this->newSelect();
-        $query->select('*')->where(['user_id' => $userId, 'deleted' => false]);
+        $query->select($fields)
+            ->join([
+                'table' => 'status',
+                'type' => 'INNER',
+                'conditions' => 'status.id = ' . $this->table . '.status_id',
+            ])
+            ->where([$this->table . '.user_id' => $userId, $this->table . '.deleted' => false]);
         $rows = $query->execute()->fetchAll('assoc');
 
         return $rows;
@@ -122,6 +178,6 @@ class TaskTable extends AppTable
             ->set($row)
             ->where(['task_id' => $taskId, 'user_id' => $userId]);
 
-        return (bool) $query->execute();
+        return (bool)$query->execute();
     }
 }

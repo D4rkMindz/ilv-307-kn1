@@ -33,7 +33,7 @@ $routes->get('/user_get_id')->setRequirements(['user_id' => '\d+']);
 
 $routes->add('/users_post', route('POST', '/users', 'App\Controller\Api\UserController:addUser'));
 
-$routes->add('/users_update', route('UPDATE', '/users/{user_id}', 'App\Controller\Api\UserController:updateUser'));
+$routes->add('/users_update', route('PUT', '/users/{user_id}', 'App\Controller\Api\UserController:updateUser'));
 $routes->get('/users_update')->setRequirements(['user_id' => '\d+']);
 
 $routes->add('/users_delete', route('DELETE', '/users/{user_id}', 'App\Controller\Api\UserController:deleteUser'));
@@ -45,36 +45,30 @@ $routes->get('/users_delete')->setRequirements(['user_id' => '\d+']);
 $routes->add('/tasks_get', route('GET', '/users/{user_id}/tasks', 'App\Controller\Api\TaskController:getTasks'));
 $routes->get('/tasks_get')->setRequirements(['user_id' => '\d+']);
 
-
 $routes->add('/tasks_post', route('POST', '/tasks', 'App\Controller\Api\TaskController:addTask'));
 
 $routes->add('/tasks_update',
-    route('UPDATE', '/tasks/{task_id}', 'App\Controller\Api\TaskController:updateTask'));
-$routes->get('/tasks_update')->setRequirements(['user_id' => '\d+']);
-$routes->get('/tasks_update')->setRequirements(['task_id' => '\d+']);
+    route('PUT', '/users/{user_id}/tasks/{task_id}', 'App\Controller\Api\TaskController:updateTask'));
+$routes->get('/tasks_update')->setRequirements(['user_id' => '\d+', 'task_id' => '\d+']);
 
 $routes->add('/tasks_delete',
-    route('DELETE', '/tasks/{task_id}', 'App\Controller\Api\TaskController:deleteTask'));
-$routes->get('/tasks_delete')->setRequirements(['user_id' => '\d+']);
-$routes->get('/tasks_delete')->setRequirements(['task_id' => '\d+']);
+    route('DELETE', '/users/{user_id}/tasks/{task_id}', 'App\Controller\Api\TaskController:deleteTask'));
+$routes->get('/tasks_delete')->setRequirements(['user_id' => '\d+', 'task_id' => '\d+']);
 
 $routes->add('/tasks_get_id',
     route('GET', '/users/{user_id}/tasks/{task_id}', 'App\Controller\Api\TaskController:getTask'));
-$routes->get('/tasks_get_id')->setRequirements(['user_id' => '\d+']);
-$routes->get('/tasks_get_id')->setRequirements(['task_id' => '\d+']);
+$routes->get('/tasks_get_id')->setRequirements(['user_id' => '\d+', 'task_id' => '\d+']);
 
 /**
  * Allocate Tasks
  */
 $routes->add('/tasks_allocate',
-    route('POST', '/users/{user_id}/tasks/{task_id}', 'App\Controller\Api\TaskController:allocateTask'));
-$routes->get('/tasks_allocate')->setRequirements(['user_id' => '\d+']);
-$routes->get('/tasks_allocate')->setRequirements(['task_id' => '\d+']);
+    route('POST', '/users/{user_id}/tasks/{task_id}/allocate', 'App\Controller\Api\TaskController:allocateTask'));
+$routes->get('/tasks_allocate')->setRequirements(['user_id' => '\d+', 'task_id' => '\d+']);
 
 $routes->add('/tasks_deallocate',
-    route('DELETE', '/users/{user_id}/tasks/{task_id}', 'App\Controller\Api\TaskController:deallocateTask'));
-$routes->get('/tasks_deallocate')->setRequirements(['user_id' => '\d+']);
-$routes->get('/tasks_deallocate')->setRequirements(['task_id' => '\d+']);
+    route('DELETE', '/users/{user_id}/tasks/{task_id}/deallocate', 'App\Controller\Api\TaskController:deallocateTask'));
+$routes->get('/tasks_deallocate')->setRequirements(['user_id' => '\d+', 'task_id' => '\d+']);
 
 /**
  * Authorization

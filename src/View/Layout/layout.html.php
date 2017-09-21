@@ -84,7 +84,7 @@ $base = $pathinfo['basename'];
 </nav>
 <div class="section-content"></div>
 <?= $this->section('content') ?>
-<?= asset('view::Layout/layout.css')?>
+<?= asset('view::Layout/layout.css') ?>
 <div id="loader">
     <div id="loading"></div>
 </div>
