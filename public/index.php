@@ -8,6 +8,7 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: access-control-allow-origin,content-type,authorization");
 
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 require_once __DIR__ . "/../config/bootstrap.php";
 try {
@@ -18,6 +19,6 @@ try {
     $routes = config()->get("routes");
     dispatch($request, $response, $routes);
 } catch (ResourceNotFoundException $exception) {
-    $errorUrl = baseurl("/error-404");
-    header("Location: $errorUrl");
+    logger('errors-at')->error($exception->getMessage());
+    return new JsonResponse(['status' => 'error', 'message' => 'PAGE_NOT_FOUND'], 404);
 }

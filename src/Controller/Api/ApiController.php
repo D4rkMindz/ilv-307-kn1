@@ -5,6 +5,7 @@ namespace App\Controller\Api;
 use App\Controller\AppController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class ApiController
@@ -15,7 +16,7 @@ class ApiController extends AppController
      * Before action.
      *
      * @param Request $request
-     * @return null|JsonResponse
+     * @return null|Response
      */
     protected function beforeAction(Request $request = null/*, Response $response = null*/)
     {
@@ -26,10 +27,11 @@ class ApiController extends AppController
             if (!$server->verifyResourceRequest($req)) {
                 $response = $server->getResponse();
 
-                return $this->json([
+                $content = [
                     'status_code' => $response->getStatusCode(),
                     'message' => $response->getStatusText(),
-                ]);
+                ];
+                return new Response(json_encode($content), 401, ['WWW-Authenticate'=>'Basic realm="Please enter your login data"']);
             }
         }
 

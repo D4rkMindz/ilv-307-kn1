@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouteCollection;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Check if blank
@@ -220,6 +221,7 @@ function hosturl()
  * @param Request $request
  * @param Response $response
  * @param RouteCollection $routes
+ * @return JsonResponse
  */
 function dispatch(Request $request, Response $response, RouteCollection $routes)
 {
@@ -249,13 +251,11 @@ function dispatch(Request $request, Response $response, RouteCollection $routes)
             $response = $responseNew;
         }
     } catch (Exception $ex) {
-        logger("Errors-at")->error($ex->getMessage());
-        $errorController = new \App\Controller\ErrorController($request, $response, $session);
-        $response = $errorController->error404();
+        logger("errors-at")->error($ex->getMessage() . '\n' . $ex->getTraceAsString());
+        return new JsonResponse(['status' => 'error', 'message' => 'PAGE_NOT_FOUND'], 404);
     } catch (Error $er) {
-        logger("Errors-at")->error($er->getMessage());
-        $errorController = new \App\Controller\ErrorController($request, $response, $session);
-        $response = $errorController->error500();
+        logger("errors-at")->error($er->getMessage() . '\n' . $er->getTraceAsString());
+        return new JsonResponse(['status' => 'error', 'message' => 'INTERNAL_SERVER_ERROR'], 500);
     }
 
     if ($session && $session->isStarted()) {

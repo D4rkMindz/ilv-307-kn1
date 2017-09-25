@@ -60,9 +60,11 @@ class TaskTable extends AppTable
      * Get all tasks.
      *
      * @param int $userId
+     * @param int $limit
+     * @param int $page
      * @return array
      */
-    public function getAllTasks(int $userId): array
+    public function getAllTasks(int $userId, int $limit, int $page): array
     {
         $fields = [
             $this->table . '.id',
@@ -89,7 +91,8 @@ class TaskTable extends AppTable
                 'type' => 'INNER',
                 'conditions' => 'status.id = ' . $this->table . '.status_id',
             ])
-            ->where([$this->table . '.user_id' => $userId, $this->table . '.deleted' => false]);
+            ->where([$this->table . '.user_id' => $userId])
+            ->page($page, $limit);
         $rows = $query->execute()->fetchAll('assoc');
 
         return $rows;

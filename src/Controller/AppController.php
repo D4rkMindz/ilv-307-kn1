@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Table\BlockedUserTable;
 use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;

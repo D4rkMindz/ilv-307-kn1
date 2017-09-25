@@ -18,8 +18,16 @@ class UserController extends ApiController
      */
     public function getUsers(): JsonResponse
     {
+        $limit = (int)$this->request->query->get('limit');
+        $page = (int)$this->request->query->get('page');
+        if (!$limit) {
+            $limit = 10;
+        }
+        if (!$page) {
+            return $this->json(['status' => 'error', 'message' => 'NO_PAGE_DEFINED']);
+        }
         $userTable = new UserTable();
-        $data = $userTable->getAll();
+        $data = $userTable->getAllJoined($page, $limit);
         if (empty($data)) {
             return $this->returnError(__('no users available'), 'ERROR_NO_USR_AVAILABLE', 500);
         }

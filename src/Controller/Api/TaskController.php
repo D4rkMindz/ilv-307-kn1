@@ -18,9 +18,23 @@ class TaskController extends ApiController
      */
     public function getTasks()
     {
+        $limit = (int)$this->request->query->get('limit');
+        $page = (int)$this->request->query->get('page');
         $userId = (int)$this->request->attributes->get('user_id');
+
+        if (!$limit) {
+            $limit = 10;
+        }
+        if (!$page) {
+            return $this->json(['status' => 'error', 'message' => 'NO_PAGE_DEFINED']);
+        }
+
+        if (!$userId) {
+            return $this->json(['status' => 'error', 'message' => 'NO_USER_DEFINED']);
+        }
+
         $taskTable = new TaskTable();
-        $tasks = $taskTable->getAllTasks($userId);
+        $tasks = $taskTable->getAllTasks($userId, $limit, $page);
 
         return $this->json($tasks);
     }
@@ -32,7 +46,17 @@ class TaskController extends ApiController
      */
     public function getTask()
     {
+        $userId = (int)$this->request->attributes->get('user_id');
         $taskId = (int)$this->request->attributes->get('task_id');
+
+        if (!$userId) {
+            return $this->json(['status' => 'error', 'message' => 'NO_USER_DEFINED']);
+        }
+
+        if (!$taskId) {
+            return $this->json(['status' => 'error', 'message' => 'NO_TASK_DEFINED']);
+        }
+
         $userTable = new TaskTable();
         $task = $userTable->getTask($taskId);
 
