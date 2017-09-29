@@ -171,9 +171,10 @@ class AppController
     {
         $requestContent = $request->getContent();
         $result = json_decode($requestContent, true);
-        if (empty($result) || !is_array($result)) {
-            throw new Exception('Invalid Json request');
-        }
+        //TODO: remove for AUTH
+        //if (/*empty($result) ||*/ !is_array($result)) {
+        //    throw new Exception('Invalid Json request');
+        //}
 
         return $result;
     }

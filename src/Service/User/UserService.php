@@ -28,9 +28,10 @@ class UserService extends AppService
      */
     public function addNewUser(array $data): array
     {
-        if (!$this->hasPermission($data['access_token'], ADMIN)) {
+        //TODO: Remove for AUTH
+        /*if (!$this->hasPermission($data['access_token'], ADMIN)) {
             return ['status' => 'error', 'error' => 'ACTION_NOT_ALLOWED'];
-        }
+        }*/
 
         $userValidation = new UserValidation();
         $validationContext = $userValidation->validateInsert($data);
@@ -38,7 +39,9 @@ class UserService extends AppService
             return ['status' => 'error', 'message' => $validationContext->toArray()];
         }
 
-        $user = $this->getUser($data['access_token']);
+        //TODO: remove for AUTH
+        //$user = $this->getUser($data['access_token']);
+        $user = ['id' => 2, 'role_id' => 1];
 
         $personRow = $this->mapPersonRow($data, $user);
         $peopleTable = new PeopleTable();
@@ -60,9 +63,10 @@ class UserService extends AppService
      */
     public function updatedUser(array $data, int $userId): array
     {
-        if (!$this->hasPermission($data['access_token'], USER_PLUS)) {
-            return ['status' => 'error', 'error' => 'ACTION_NOT_ALLOWED'];
-        }
+        //TODO remove this for auth
+        //if (!$this->hasPermission($data['access_token'], USER_PLUS)) {
+        //    return ['status' => 'error', 'error' => 'ACTION_NOT_ALLOWED'];
+        //}
 
         $userValidation = new UserValidation();
         $validationContext = $userValidation->validateUpdate($data, $userId);
@@ -73,7 +77,8 @@ class UserService extends AppService
 
         $response = ['status' => 'success'];
 
-        $user = $this->getUser($data['access_token']);
+        //$user = $this->getUser($data['access_token']);
+        $user = ['id' => 1, 'level' => 4, 'role_id' => 1];
         $userRow = $this->mapUserUpdateRow($data, $user);
         $personRow = $this->mapPersonUpdateRow($data, $user);
 
@@ -128,6 +133,7 @@ class UserService extends AppService
         $userRow = [
             'role_id' => $user['role_id'],
             'person_id' => $personId,
+            'oauth_clients_id' => 1,
             'username' => $data['username'],
             'password' => password_hash($data['password'], PASSWORD_DEFAULT),
             'created' => date('Y-m-d H:i:s'),

@@ -4,6 +4,7 @@
  *
  * @author  Björn Pfoster
  */
+
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: access-control-allow-origin,content-type,authorization");
 
@@ -14,7 +15,12 @@ require_once __DIR__ . "/../config/bootstrap.php";
 try {
     // Request and response
     $request = request();
-    $response = response();
+    $response = response();/*
+    if ($request->getMethod() == 'OPTIONS'){
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+        $response->headers->set('Access-Control-Allow-Headers', 'access-control-allow-origin,content-type,authorization');
+        return $response->send();
+    }*/
 
     $routes = config()->get("routes");
     dispatch($request, $response, $routes);

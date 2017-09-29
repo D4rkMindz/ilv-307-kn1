@@ -2,6 +2,7 @@
 
 namespace App\Service\User;
 
+use App\Table\PeopleTable;
 use App\Table\PostCodeTable;
 use App\Table\UserTable;
 use App\Util\ValidationContext;
@@ -27,7 +28,13 @@ class UserValidation
      */
     public function validateInsert(array $data): ValidationContext
     {
+
         $validationContext = new ValidationContext(__('Please check your data'));
+
+        if ($this->isEmpty($data, $validationContext)) {
+            return $validationContext;
+        }
+
         $this->validateUsername($data['username'], $validationContext);
         $this->validateName($data['firstName'], 'first_name', $validationContext);
         $this->validateName($data['lastName'], 'last_name', $validationContext);
@@ -60,16 +67,21 @@ class UserValidation
     public function validateUpdate(array $data, int $userId): ValidationContext
     {
         $validationContext = new ValidationContext(__('Please check your data'));
-        if (is_numeric($userId)) {
+
+        if ($this->isEmpty($data, $validationContext)) {
+            return $validationContext;
+        }
+
+        if (!is_numeric($userId)) {
             $validationContext->setError('userId', __('required'));
         } else {
             $this->existsUserById($userId, $validationContext);
         }
 
         if (!array_key_exists('personId', $data)) {
-            $validationContext->setError('personId', __('required'));
+            $validationContext->setError('person_id', __('required'));
         } else {
-            $this->existsUserById($data['id'], $validationContext);
+            $this->existsPersonById($data['personId'], $validationContext);
         }
 
         if (array_key_exists('username', $data)) {
@@ -95,11 +107,50 @@ class UserValidation
         return $validationContext;
     }
 
+    /**
+     * Check if data is empty.
+     *
+     * @param array $data
+     * @param ValidationContext $validationContext
+     * @return bool
+     */
+    protected function isEmpty(array $data, ValidationContext $validationContext): bool
+    {
+        $err = false;
+        if (empty($data)) {
+            $validationContext->setError('main', __('Please insert all required data'));
+
+            return true;
+        }
+        foreach ($data as $key => $value) {
+            if (empty($value)) {
+                $validationContext->setError($key, __('Required'));
+                $err = true;
+            }
+        }
+
+        return $err;
+    }
+
+    /**
+     * Check if userid exists.
+     *
+     * @param int $userId
+     * @param ValidationContext $validationContext
+     */
     protected function existsUserById(int $userId, ValidationContext $validationContext)
     {
         $userTable = new UserTable();
         if (!$userTable->existsId($userId)) {
             $validationContext->setError('id', __('User does not exist'));
+        }
+    }
+
+    protected function existsPersonById(int $userId, ValidationContext $validationContext)
+    {
+        $peopleTable = new PeopleTable();
+        if (!$peopleTable->existsId($userId)) {
+            $validationContext->setError('person_id', __('Person does not exist'));
         }
     }
 
@@ -115,7 +166,7 @@ class UserValidation
         $this->validateLength($username, 'username', $validationContext);
         $userTable = new UserTable();
         if ($userTable->existsUsername($username)) {
-            $validationContext->setError('username', __('Username already exists'));
+            $validationContext->setError('username', __('Please change the username'));
         }
     }
 

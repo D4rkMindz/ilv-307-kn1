@@ -20,6 +20,8 @@ class ApiController extends AppController
      */
     protected function beforeAction(Request $request = null/*, Response $response = null*/)
     {
+        //TODO: Remove for AUTH
+        return null;
         $auth = $request->attributes->get('_auth');
         if ($auth) {
             $server = oauth2_server();
@@ -31,7 +33,9 @@ class ApiController extends AppController
                     'status_code' => $response->getStatusCode(),
                     'message' => $response->getStatusText(),
                 ];
-                return new Response(json_encode($content), 401, ['WWW-Authenticate'=>'Basic realm="Please enter your login data"']);
+
+                return new Response(json_encode($content), 401,
+                    ['WWW-Authenticate' => 'Basic realm="Please enter your login data"']);
             }
         }
 

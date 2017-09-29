@@ -81,7 +81,7 @@ class UserController extends ApiController
      */
     public function updateUser(): JsonResponse
     {
-        $userId = $this->request->attributes->get('user_id');
+        $userId = (int)$this->request->attributes->get('user_id');
         $data = $this->getJsonRequest($this->request);
 
         $userService = new UserService();
