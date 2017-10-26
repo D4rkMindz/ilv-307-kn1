@@ -243,10 +243,9 @@ function dispatch(Request $request, Response $response, RouteCollection $routes)
         // Call event
         $action = $match['_controller'];
 
-        $parts = explode(':', $action);
-        $object = new $parts[0]($request, $response, $session);
+        $object = new $action[0]($request, $response, $session);
         $function = array($object, 'callAction');
-        $responseNew = call_user_func_array($function, [$parts[1], $request, $response]);
+        $responseNew = call_user_func_array($function, [$action[1], $request, $response]);
         if ($responseNew instanceof Response) {
             $response = $responseNew;
         }

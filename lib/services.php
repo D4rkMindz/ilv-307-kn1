@@ -97,13 +97,13 @@ function response()
  *
  * @param $methods
  * @param $path
- * @param $controller
+ * @param callable|string $callable The route callback routine
  *
  * @return Route
  */
-function route($methods, $path, $controller)
+function route($methods, $path, $callable)
 {
-    return new Route(baseurl($path), ['_controller' => $controller], [], [], '', [], (array)$methods);
+    return new Route(baseurl($path), ['_controller' => $callable], [], [], '', [], (array)$methods);
 }
 
 /**

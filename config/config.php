@@ -21,9 +21,10 @@ $config['assets']['minimize'] = false;
 
 // Database settings
 // insertUser data here
+// TODO insert database data
 $config['db']['host'] = '127.0.0.1';
 $config['db']['port'] = '3306';
-//in env.php
+// in env.php
 $config['db']['database'] = '';
 $config['db']['username'] = '';
 $config['db']['password'] = '';
@@ -34,11 +35,12 @@ $config['db']['migrationsPath'] = __DIR__ . '/../resources/migrations';
 
 // Test Database settings
 // insert User data here
+// TODO insert database data
 $config['db_test']['host'] = '127.0.0.1';
 $config['db_test']['port'] = '3306';
-//in env.php
-$config['db_test']['database'] = 'contact_form_test';
-$config['db_test']['username'] = 'root';
+// in env.php
+$config['db_test']['database'] = '';
+$config['db_test']['username'] = '';
 $config['db_test']['password'] = '';
 $config['db_test']['charset'] = 'utf8';
 $config['db_test']['encoding'] = 'utf8';

@@ -22,24 +22,4 @@ class ErrorController extends AppController
         }
         return $this->render('view::Error/error.html.php',['code' => $errorcode]);
     }
-
-    /**
-     * Load ERROR_404 Page
-     *
-     * @return Response
-     */
-    public function error404()
-    {
-        return $this->render('view::Error/error.html.php',['code' => 404]);
-    }
-
-    /**
-     * Load ERROR_500 Page
-     *
-     * @return Response
-     */
-    public function error500()
-    {
-        return $this->render('view::Error/error.html.php',['code' => 500]);
-    }
 }

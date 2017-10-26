@@ -20,8 +20,6 @@ class ApiController extends AppController
      */
     protected function beforeAction(Request $request = null/*, Response $response = null*/)
     {
-        //TODO: Remove for AUTH
-        return null;
         $auth = $request->attributes->get('_auth');
         if ($auth) {
             $server = oauth2_server();

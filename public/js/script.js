@@ -1,18 +1,3 @@
-var app = {};
-
-$(document).ready(function () {
-	// if (navigator.serviceWorker.controller) {
-	//     console.log('[PWA Builder] active service worker found, no need to register')
-	// } else {
-	//     //Register the ServiceWorker
-	//     navigator.serviceWorker.register('pwabuider-sw.js', {
-	//         scope: './'
-	//     }).then(function (reg) {
-	//         console.log('Service worker has been registered for scope:' + reg.scope);
-	//     });
-	// }
-});
-
 /**
  * Show loading animation.
  */
@@ -61,11 +46,11 @@ function getFormData(form) {
     return formData;
 }
 
-app.translations = null;
+var translations = null;
 
 function __(text) {
-    if (app.translations[text]) {
-        text = app.translations[text];
+    if (translations[text]) {
+        text = translations[text];
     }
     arguments[0] = text;
     text = sprintf.apply(this, arguments);
@@ -73,7 +58,7 @@ function __(text) {
 }
 
 function setText(translations) {
-    app.translations = translations;
+    translations = translations;
 }
 /**
  * Base url
