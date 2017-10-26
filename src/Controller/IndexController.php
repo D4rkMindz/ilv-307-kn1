@@ -16,6 +16,21 @@ class IndexController extends AppController
      */
     public function index()
     {
-        return $this->render('view::Index/index.html.php');
+        $viewData = [
+            'title' => 'Herzlich Willkommen in Müller\'s Hofladen',
+            'abbr'=> 'Home',
+            'news' => true,
+        ];
+        return $this->render('view::Index/index.html.php', $viewData);
+    }
+
+    public function openingHours()
+    {
+        $viewData = [
+            'title' => 'Öffnungszeiten des Hofladens',
+            'abbr'=> 'Öffnungszeiten',
+            'news' => true,
+        ];
+        return $this->render('view::Index/opening-hours.html.php', $viewData);
     }
 }

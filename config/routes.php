@@ -10,24 +10,25 @@ $routes = new RouteCollection();
 $routes->add('/index_get', route('GET', '/', ['App\Controller\IndexController', 'index']));
 $routes->get('/index_get')->addDefaults(['_auth' => false]);
 
-/**
- * Error
- */
-$routes->add('/error_get', route('GET', '/error/{errorcode}', ['App\Controller\ErrorController', 'index']));
-$routes->get('/error_get')->setRequirements(['errorcode' => '\d+']);
-$routes->get('/error_get')->addDefaults(['_auth' => false]);
+$routes->add('/produkte_get', route('GET', '/produkte', ['App\Controller\ProductController', 'index']));
+$routes->get('/produkte_get')->addDefaults(['_auth' => false]);
 
-/**
- * Language
- */
-$routes->add('/language', route('GET', '/language', ['App\Controller\LanguageController', 'language']));
-$routes->get('/language')->addDefaults(['_auth' => false]);
+$routes->add('/fleisch_get', route('GET', '/produkte/fleisch', ['App\Controller\ProductController', 'meat']));
+$routes->get('/fleisch_get')->addDefaults(['_auth' => false]);
 
-/**
- * Authorization
- */
-$routes->add('/authorize_add',
-    route(['POST', 'OPTIONS'], '/authorize', ['App\Controller\Api\AuthorizationController', 'getAuth']));
-$routes->get('/authorize_add')->addDefaults(['_auth' => false]);
+$routes->add('/rind_get', route('GET', '/produkte/fleisch/rind', ['App\Controller\ProductController', 'beef']));
+$routes->get('/rind_get')->addDefaults(['_auth' => false]);
+
+$routes->add('/kaninchen_get', route('GET', '/produkte/fleisch/kaninchen', ['App\Controller\ProductController', 'rabbit']));
+$routes->get('/kaninchen_get')->addDefaults(['_auth' => false]);
+
+$routes->add('/pflanzlich_get', route('GET', '/produkte/pflanzlich', ['App\Controller\ProductController', 'vegetables']));
+$routes->get('/pflanzlich_get')->addDefaults(['_auth' => false]);
+
+$routes->add('/oeffnungszeiten_get', route('GET', '/öffnungszeiten', ['App\Controller\IndexController', 'openingHours']));
+$routes->get('/oeffnungszeiten_get')->addDefaults(['_auth' => false]);
+
+$routes->add('/kontakt_get', route('GET', '/kontakt', ['App\Controller\ContactController', 'index']));
+$routes->get('/kontakt_get')->addDefaults(['_auth' => false]);
 
 return $routes;

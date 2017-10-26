@@ -148,7 +148,7 @@ function rrmdir($delete)
 /**
  * Checks multidimensional array for $needle.
  *
- * @param mixed $needle string oder integer to find in the haystack
+ * @param mixed $needle string or integer to find in the haystack
  * @param array $haystack multidimensional array to recursively check for the needle
  * @param bool $strict if true the function will check the types of the needle in the haystack
  * @return bool true if the needle was found in the haystack
