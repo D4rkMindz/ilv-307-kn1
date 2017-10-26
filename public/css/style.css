@@ -644,3 +644,11 @@ div.form_field input
     border-top: 1px solid #afafaf;
     border-bottom: 1px solid #afafaf;
 }
+
+.title {
+    margin-left: 5px;
+}
+
+.inline {
+    display: inline-block;
+}
