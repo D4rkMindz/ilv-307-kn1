@@ -28,7 +28,7 @@ $routes->get('/pflanzlich_get')->addDefaults(['_auth' => false]);
 $routes->add('/oeffnungszeiten_get', route('GET', '/öffnungszeiten', ['App\Controller\IndexController', 'openingHours']));
 $routes->get('/oeffnungszeiten_get')->addDefaults(['_auth' => false]);
 
-$routes->add('/kontakt_get', route('GET', '/kontakt', ['App\Controller\ContactController', 'index']));
+$routes->add('/kontakt_get', route('GET', '/kontakt', ['App\Controller\IndexController', 'contact']));
 $routes->get('/kontakt_get')->addDefaults(['_auth' => false]);
 
 return $routes;

@@ -39,12 +39,6 @@ tmp/cache/*
 tmp/logs/*
 !tmp/logs/empty
 
-#Complete files/ folder except
-#.htaccess file,
-!files/
-files/*
-!files/.htaccess
-
 #Prod database sql
 docs/contact_form.sql
 tmp/cache/

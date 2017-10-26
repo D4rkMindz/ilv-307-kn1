@@ -55,7 +55,6 @@ class Collection extends \ArrayIterator
         $toUnset = [];
         foreach ($this as $key => $item) {
             if (!$func($item, $key)) {
-                //TODO get explanation why TF the $key increases by 2 (expected: increase by 1) if "$toUnset[] = $key;" is replaced with "unset($this[$key]);"
                 $toUnset[] = $key;
             }
         }

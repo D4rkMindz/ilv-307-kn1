@@ -33,4 +33,14 @@ class IndexController extends AppController
         ];
         return $this->render('view::Index/opening-hours.html.php', $viewData);
     }
+
+    public function contact()
+    {
+        $viewData = [
+            'title'=> 'Unsere Kontaktdaten',
+            'abbr' => 'Kontakt',
+            'news' => true,
+        ];
+        return $this->render('view::Index/contact.html.php',$viewData);
+    }
 }

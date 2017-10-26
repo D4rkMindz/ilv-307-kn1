@@ -10,7 +10,6 @@
     <meta name=“robots” content=“nofollow”>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <base href="<?php echo baseurl("/", true) ?>">
-    <link rel="canonical" href="https://contactform.d4rkmindz.ch/"/>
     <link rel="icon" href="favicon.ico">
 
 
@@ -43,7 +42,7 @@ $base = $pathinfo['basename'];
         <div id="logo">
             <div id="logo_text">
                 <!-- class="logo_colour", allows you to change the colour of the text -->
-                <h1><a href="index.php">m&uuml;ller&apos;s<span class="logo_colour">_hofladen</span></a></h1>
+                <h1><a href="<?= baseurl('/')?>">m&uuml;ller&apos;s<span class="logo_colour">_hofladen</span></a></h1>
                 <h2>Natürliche Produkte, direkt ab Hof!</h2>
             </div>
         </div>
