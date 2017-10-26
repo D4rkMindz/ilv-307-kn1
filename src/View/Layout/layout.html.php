@@ -15,6 +15,7 @@
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="js/jquery.min.js"></script>
+    <script src="js/notifit.min.js"></script>
     <script src="js/script.js"></script>
 
 
@@ -62,6 +63,7 @@ $base = $pathinfo['basename'];
                 </li>
                 <li<?php if($base == "/öffnungszeiten") print(' class="selected"'); ?>><a href="<?= baseurl('/öffnungszeiten')?>">Öffnungszeiten</a></li>
                 <li<?php if($base == "/kontakt") print(' class="selected"'); ?>><a href="<?= baseurl('/kontakt')?>">Kontakt</a></li>
+                <li<?php if($base == "/kontakt") print(' class="selected"'); ?>><a href="<?= baseurl('/warenkorb')?>">Warebkorb (<?= count(session()->get('cart'))?>) </a></li>
             </ul>
         </nav>
     </header>

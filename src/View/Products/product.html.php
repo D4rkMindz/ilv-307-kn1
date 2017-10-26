@@ -7,5 +7,9 @@ foreach ($this->v('data') as $item):?>
         <h2><?= $item['titel']; ?></h2>
         <p><?= $item['beschreibung']; ?></p>
         <p>CHF <?= $item['preis']?></p>
+        <div class="counter"><!-- <- For JS ^^ -->
+            <input type="number" id="<?= $item['titel']; ?>" class="count" value="1">
+            <button class="button" onclick="addToShoppingCart(this)">Zum Warenkorb hinzufügen</button>
+        </div>
     </div>
 <?php endforeach;?>

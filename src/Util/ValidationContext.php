@@ -7,8 +7,14 @@ namespace App\Util;
  */
 class ValidationContext
 {
+    /**
+     * @var string $message main error message
+     */
     protected $message;
 
+    /**
+     * @var array $errors
+     */
     protected $errors = [];
 
     /**
@@ -115,5 +121,10 @@ class ValidationContext
         ];
 
         return $result;
+    }
+
+    public function toJson()
+    {
+        return json_encode($this->toArray());
     }
 }

@@ -64,30 +64,12 @@ class AppController
      */
     protected function beforeAction(Request $request = null/*, Response $response = null*/)
     {
-        header("Access-Control-Allow-Origin: *");
-        header("Access-Control-Allow-Headers: access-control-allow-origin,content-type,authorization");
         $auth = $request->attributes->get("_auth");
-
-        if ($auth !== false && !$this->validateSession()) {
+        if ($auth !== false) {
             return $this->redirect("/");
         }
 
         return null;
-    }
-
-    /**
-     * Handling Session.
-     *
-     * @return bool if valid
-     */
-    protected function validateSession()
-    {
-        $status = $this->session->get("user_id");
-        if (empty($status)) {
-            return false;
-        }
-
-        return true;
     }
 
     /**

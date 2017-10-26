@@ -31,4 +31,10 @@ $routes->get('/oeffnungszeiten_get')->addDefaults(['_auth' => false]);
 $routes->add('/kontakt_get', route('GET', '/kontakt', ['App\Controller\IndexController', 'contact']));
 $routes->get('/kontakt_get')->addDefaults(['_auth' => false]);
 
+$routes->add('/shopping_cart_get', route('GET', '/warenkorb', ['App\Controller\ShoppingCartController','index']));
+$routes->get('/shopping_cart_get')->addDefaults(['_auth'=> false]);
+
+$routes->add('/shopping_cart_post', route('POST', '/warenkorb', ['App\Controller\ShoppingCartController','placeItem']));
+$routes->get('/shopping_cart_post')->addDefaults(['_auth'=> false]);
+
 return $routes;
