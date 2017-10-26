@@ -55,7 +55,7 @@ class ShoppingCartService
      */
     public function add(array $data)
     {
-        $cart = $this->session->get('cart');
+        $cart = $this->getCart();
         $cart[] = $data;
         $this->session->set('cart', $cart);
     }
@@ -90,6 +90,7 @@ class ShoppingCartService
      */
     private function clean(array &$sorted)
     {
+        // TODO update this funciton (key value is not correct)
         $res = [];
         foreach ($sorted as $key => $value) {
             $res[$value['id']] += $value['count'];
