@@ -16,33 +16,20 @@
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="js/jquery.min.js"></script>
-    <script type='text/javascript' src='js/notifIt.min.js'></script>
     <script src="js/script.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/mustache.min.js"></script>
 
 
     <?php foreach ($this->next("js") as $path) : ?>
         <script type="text/javascript" src="<?= $path ?>"></script>
     <?php endforeach; ?>
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/font-awesome.css">
-    <link rel='stylesheet' type='text/css' href='css/notifIt.css'>
     <link rel="stylesheet" href="css/style.css">
 
     <?= $this->section('assets') ?>
 
-    <title><?= $this->wh("page") ?></title>
+
+    <title>Müller's Hofladen - <?= $this->v('abbr') ?></title>
+    <!-- modernizr enables HTML5 elements and feature detects -->
+    <script type="text/javascript" src="js/modernizr-1.5.min.js"></script>
 
 </head>
 <?php
@@ -50,18 +37,6 @@ $query = request()->server->get('REQUEST_URI');
 $pathinfo = pathinfo($query);
 $base = $pathinfo['basename'];
 ?>
-<body>
-<!DOCTYPE HTML>
-<html>
-
-<head>
-    <title>Müller's Hofladen - <?= $this->v('abbr') ?></title>
-    <meta http-equiv="content-type" content="text/html; charset=utf8" />
-    <link rel="stylesheet" type="text/css" href="css/style.css" />
-    <!-- modernizr enables HTML5 elements and feature detects -->
-    <script type="text/javascript" src="js/modernizr-1.5.min.js"></script>
-</head>
-
 <body>
 <div id="main">
     <header>
