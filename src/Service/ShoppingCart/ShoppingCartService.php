@@ -2,6 +2,7 @@
 
 namespace App\Service\ShoppingCart;
 
+use App\Util\CsvReader;
 use App\Util\ValidationContext;
 use Symfony\Component\HttpFoundation\Session\Session;
 
@@ -49,6 +50,25 @@ class ShoppingCartService
     }
 
     /**
+     * Validate delivered DELETE data.
+     *
+     * @param array $data
+     * @return ValidationContext $validationContext
+     */
+    public function validateDelete(array $data): ValidationContext
+    {
+        $validationContext = new ValidationContext('Manipulierte Eingabe');
+
+        if (!array_key_exists('id', $data)) {
+            $msg = 'Missing keys delivered.  @' . date('Y-m-d H:i:s');
+            $validationContext->setError('key', $msg);
+            return $validationContext;
+        }
+
+        return $validationContext;
+    }
+
+    /**
      * Add to shopping cart.
      *
      * @param array $data
@@ -57,17 +77,69 @@ class ShoppingCartService
     {
         $cart = $this->getCart();
         $cart[] = $data;
+        $this->save($cart);
+    }
+
+    /**
+     * Update item.
+     *
+     * @param string $id
+     * @param string|int $value
+     */
+    public function update(string $id, $value)
+    {
+        $cart = $this->getCart();
+        foreach ($cart as $key => $item) {
+            if ($item['id'] === $id) {
+                $cart[$key]['count'] = $value;
+            }
+        }
+        $this->save($cart);
+    }
+
+    /**
+     * Delete item from list.
+     *
+     * @param string $id
+     */
+    public function delete(string $id)
+    {
+        $cart = $this->getCart();
+        foreach ($cart as $key => $item) {
+            if ($item['id'] === $id) {
+                unset($cart[$key]);
+            }
+        }
+        $this->save($cart);
+    }
+
+    public function clear()
+    {
+        $this->session->set('cart', null);
+        $this->session->set('success', true);
+    }
+
+    /**
+     * Save cart.
+     *
+     * @param array $cart
+     */
+    private function save(array $cart)
+    {
         $this->session->set('cart', $cart);
     }
 
     /**
      * Clean up doubled entries
      */
-    public function getCart()
+    public function getCart(bool $withPrices = false)
     {
         $cart = $this->session->get('cart');
         $this->sort($cart);
         $this->clean($cart);
+        if ($withPrices) {
+            $this->addPrice($cart);
+        }
         return $cart;
     }
 
@@ -76,11 +148,13 @@ class ShoppingCartService
      *
      * @param array $cart
      */
-    private function sort(array &$cart)
+    private function sort(&$cart)
     {
-        usort($cart, function ($a, $b) {
-            return $a['id'] <=> $b['id'];
-        });
+        if (!empty($cart)) {
+            usort($cart, function ($a, $b) {
+                return $a['id'] <=> $b['id'];
+            });
+        }
     }
 
     /**
@@ -88,13 +162,31 @@ class ShoppingCartService
      *
      * @param array $sorted
      */
-    private function clean(array &$sorted)
+    private function clean(&$sorted)
     {
-        // TODO update this funciton (key value is not correct)
         $res = [];
+        $def = [];
         foreach ($sorted as $key => $value) {
             $res[$value['id']] += $value['count'];
         }
-        $sorted = $res;
+        foreach ($res as $key => $value) {
+            $def[] = ['id' => $key, 'count' => $value];
+        }
+        $sorted = $def;
+    }
+
+    private function addPrice(&$cleaned)
+    {
+        $csvReader = new CsvReader(config()->get('csv_file.dir'));
+        $data = $csvReader->readAll();
+
+        foreach ($cleaned as $key => $value) {
+            foreach ($data as $item) {
+                if ($value['id'] == $item['titel']) {
+                    $price = $value['count'] * $item['preis'];
+                    $cleaned[$key]['price'] = number_format((float)$price, 2, '.', '');;
+                }
+            }
+        }
     }
 }

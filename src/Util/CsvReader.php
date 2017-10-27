@@ -25,14 +25,7 @@ class CsvReader
      */
     public function read(string $category): array
     {
-        $data = [];
-        $handle = fopen($this->file, 'r');
-        $headers = fgetcsv($handle);
-        while (($line = fgetcsv($handle)) !== false) {
-            $row = array_combine($headers, $line);
-            $data[] = $row;
-        }
-        fclose($handle);
+        $data = $this->readAll();
         foreach ($data as $key => $record) {
             if ($record['kategorie'] != $category) {
                 unset($data[$key]);
@@ -44,21 +37,30 @@ class CsvReader
     /**
      * Write new line into csv file.
      *
-     * @param string $category
-     * @param string $title
-     * @param string $description
-     * @param float $price
+     * @param array $data
      */
-    public function write(string $category, string $title, string $description, float $price)
+    public function write(array $data)
     {
-        $data = [
-            $category,
-            $title,
-            $description,
-            $price,
-        ];
         $handle = fopen($this->file, 'a');
         fputcsv($handle, $data);
         fclose($handle);
+    }
+
+    /**
+     * Read all data.
+     *
+     * @return array
+     */
+    public function readAll(): array
+    {
+        $data = [];
+        $handle = fopen($this->file, 'r');
+        $headers = fgetcsv($handle);
+        while (($line = fgetcsv($handle)) !== false) {
+            $row = array_combine($headers, $line);
+            $data[] = $row;
+        }
+        fclose($handle);
+        return $data;
     }
 }

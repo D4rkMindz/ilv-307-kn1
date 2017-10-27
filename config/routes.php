@@ -37,4 +37,13 @@ $routes->get('/shopping_cart_get')->addDefaults(['_auth'=> false]);
 $routes->add('/shopping_cart_post', route('POST', '/warenkorb', ['App\Controller\ShoppingCartController','placeItem']));
 $routes->get('/shopping_cart_post')->addDefaults(['_auth'=> false]);
 
+$routes->add('/shopping_cart_put', route('PUT', '/warenkorb', ['App\Controller\ShoppingCartController','updateItem']));
+$routes->get('/shopping_cart_put')->addDefaults(['_auth'=> false]);
+
+$routes->add('/shopping_cart_delete', route('DELETE', '/warenkorb', ['App\Controller\ShoppingCartController','deleteItem']));
+$routes->get('/shopping_cart_delete')->addDefaults(['_auth'=> false]);
+
+$routes->add('/shopping_cart_order_post', route('POST', '/bestellen', ['App\Controller\ShoppingCartController','order']));
+$routes->get('/shopping_cart_order_post')->addDefaults(['_auth'=> false]);
+
 return $routes;

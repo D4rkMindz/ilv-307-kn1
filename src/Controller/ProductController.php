@@ -5,10 +5,19 @@ namespace App\Controller;
 
 
 use App\Util\CsvReader;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class ProductController extends AppController
 {
-    private $csvFile = __DIR__ . '/../../files/produkte.csv';
+    private $csvFile = '';
+
+    public function __construct(Request $request, Response $response, Session $session)
+    {
+        $this->csvFile = config()->get('csv_file.dir');
+        parent::__construct($request, $response, $session);
+    }
 
     public function index()
     {

@@ -15,7 +15,17 @@ $bag = config();
 
 $config = array();
 
-$config['oauth']['server'] = '';
+$config['csv_file']['dir'] = __DIR__ . '/../files/produkte.csv';
+$config['csv_file']['dir_save'] = __DIR__ . '/../files/kunden.csv';
+
+$config['mail']['from'] = '';
+$config['mail']['to']  = '';
+$config['mail']['host']  = '';
+$config['mail']['port']  = '';
+$config['mail']['username']  = '';
+$config['mail']['password'] = '';
+$config['mail']['charset']  = 'utf8';
+
 $config['assets']['cachePath'] = __DIR__ . '/../tmp/cache/';
 $config['assets']['minimize'] = false;
 

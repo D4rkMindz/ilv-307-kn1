@@ -18,8 +18,9 @@ class IndexController extends AppController
     {
         $viewData = [
             'title' => 'Herzlich Willkommen in Müller\'s Hofladen',
-            'abbr'=> 'Home',
+            'abbr' => 'Home',
             'news' => true,
+            'success' => $this->session->get('success') ? true : false,
         ];
         return $this->render('view::Index/index.html.php', $viewData);
     }
@@ -28,7 +29,7 @@ class IndexController extends AppController
     {
         $viewData = [
             'title' => 'Öffnungszeiten des Hofladens',
-            'abbr'=> 'Öffnungszeiten',
+            'abbr' => 'Öffnungszeiten',
             'news' => true,
         ];
         return $this->render('view::Index/opening-hours.html.php', $viewData);
@@ -37,10 +38,10 @@ class IndexController extends AppController
     public function contact()
     {
         $viewData = [
-            'title'=> 'Unsere Kontaktdaten',
+            'title' => 'Unsere Kontaktdaten',
             'abbr' => 'Kontakt',
             'news' => true,
         ];
-        return $this->render('view::Index/contact.html.php',$viewData);
+        return $this->render('view::Index/contact.html.php', $viewData);
     }
 }

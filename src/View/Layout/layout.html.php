@@ -15,7 +15,7 @@
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="js/jquery.min.js"></script>
-    <script src="js/notifit.min.js"></script>
+    <script src="js/notifIt.min.js"></script>
     <script src="js/script.js"></script>
 
 
@@ -23,6 +23,7 @@
         <script type="text/javascript" src="<?= $path ?>"></script>
     <?php endforeach; ?>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/notifIt.css">
 
     <?= $this->section('assets') ?>
 
