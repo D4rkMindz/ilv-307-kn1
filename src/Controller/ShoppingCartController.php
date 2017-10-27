@@ -22,8 +22,10 @@ class ShoppingCartController extends AppController
     public function index()
     {
         $shoppingCartService = new ShoppingCartService($this->session);
+        $count = $shoppingCartService->getCount();
         $data = $shoppingCartService->getCart(true);
         $viewData = [
+            'count'=>$count,
             'data' => $data,
             'title' => empty($data) ? 'Dein Warenkorb ist leer' : 'Dein Warenkorb',
             'abbr' => 'Warenkorb',

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\ShoppingCart\ShoppingCartService;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -20,7 +21,11 @@ class IndexController extends AppController
         if ($success){
             $this->session->set('success', false);
         }
+
+        $shoppingCartService = new ShoppingCartService($this->session);
+        $count = $shoppingCartService->getCount();
         $viewData = [
+            'count'=> $count,
             'title' => 'Herzlich Willkommen in Müller\'s Hofladen',
             'abbr' => 'Home',
             'news' => true,
@@ -31,7 +36,10 @@ class IndexController extends AppController
 
     public function openingHours()
     {
+        $shoppingCartService = new ShoppingCartService($this->session);
+        $count = $shoppingCartService->getCount();
         $viewData = [
+            'count'=> $count,
             'title' => 'Öffnungszeiten des Hofladens',
             'abbr' => 'Öffnungszeiten',
             'news' => true,
@@ -41,7 +49,10 @@ class IndexController extends AppController
 
     public function contact()
     {
+        $shoppingCartService = new ShoppingCartService($this->session);
+        $count = $shoppingCartService->getCount();
         $viewData = [
+            'count'=> $count,
             'title' => 'Unsere Kontaktdaten',
             'abbr' => 'Kontakt',
             'news' => true,

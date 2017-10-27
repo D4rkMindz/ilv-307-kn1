@@ -113,6 +113,9 @@ class ShoppingCartService
         $this->save($cart);
     }
 
+    /**
+     * Clear cart.
+     */
     public function clear()
     {
         $this->session->set('cart', null);
@@ -141,6 +144,19 @@ class ShoppingCartService
             $this->addPrice($cart);
         }
         return $cart;
+    }
+
+    /**
+     * Get product count.
+     *
+     * @return int
+     */
+    public function getCount()
+    {
+        $cart = $this->session->get('cart');
+        $this->sort($cart);
+        $this->clean($cart);
+        return count($cart);
     }
 
     /**
@@ -175,6 +191,11 @@ class ShoppingCartService
         $sorted = $def;
     }
 
+    /**
+     * Add Price to products.
+     *
+     * @param $cleaned
+     */
     private function addPrice(&$cleaned)
     {
         $csvReader = new CsvReader(config()->get('csv_file.dir'));

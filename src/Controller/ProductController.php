@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 
+use App\Service\ShoppingCart\ShoppingCartService;
 use App\Util\CsvReader;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,7 +22,10 @@ class ProductController extends AppController
 
     public function index()
     {
+        $shoppingCartService = new ShoppingCartService($this->session);
+        $count = $shoppingCartService->getCount();
         $viewData = [
+            'count'=> $count,
             'title' => 'Produkte, frisch ab Hof',
             'abbr' => 'Produkte',
             'news' => true,
@@ -31,7 +35,10 @@ class ProductController extends AppController
 
     public function meat()
     {
+        $shoppingCartService = new ShoppingCartService($this->session);
+        $count = $shoppingCartService->getCount();
         $viewData = [
+            'count'=> $count,
             'title' => 'Fleischliche Produkte in Bio Qualität',
             'abbr' => 'Fleischliche Produkte',
             'news' => true,
@@ -44,7 +51,10 @@ class ProductController extends AppController
         $csvReader = new CsvReader($this->csvFile);
         $data = $csvReader->read('rind');
 
+        $shoppingCartService = new ShoppingCartService($this->session);
+        $count = $shoppingCartService->getCount();
         $viewData = [
+            'count'=> $count,
             'category'=> 'rind',
             'data' => $data,
             'title' => 'Bio Rindfleisch ab Hof',
@@ -59,7 +69,10 @@ class ProductController extends AppController
         $csvReader = new CsvReader($this->csvFile);
         $data = $csvReader->read('kaninchen');
 
+        $shoppingCartService = new ShoppingCartService($this->session);
+        $count = $shoppingCartService->getCount();
         $viewData = [
+            'count'=> $count,
             'category'=> 'kaninchen',
             'data' => $data,
             'title' => 'Kaninchenfleisch aus unserem eigenen Stall',
@@ -73,7 +86,11 @@ class ProductController extends AppController
     {
         $csvReader = new CsvReader($this->csvFile);
         $data = $csvReader->read('pflanzliches');
+
+        $shoppingCartService = new ShoppingCartService($this->session);
+        $count = $shoppingCartService->getCount();
         $viewData = [
+            'count'=> $count,
             'category'=> 'pflanzlich',
             'data'=> $data,
             'title' => 'Pflanzliche Produkte ab Hof',

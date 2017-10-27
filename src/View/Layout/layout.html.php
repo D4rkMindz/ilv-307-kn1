@@ -44,50 +44,70 @@ $base = $pathinfo['basename'];
         <div id="logo">
             <div id="logo_text">
                 <!-- class="logo_colour", allows you to change the colour of the text -->
-                <h1><a href="<?= baseurl('/')?>">m&uuml;ller&apos;s<span class="logo_colour">_hofladen</span></a></h1>
+                <h1><a href="<?= baseurl('/') ?>">m&uuml;ller&apos;s<span class="logo_colour">_hofladen</span></a></h1>
                 <h2>Natürliche Produkte, direkt ab Hof!</h2>
             </div>
         </div>
         <nav>
             <ul class="sf-menu" id="nav">
-                <li<?php if($base == "/") print(' class="selected"'); ?>><a href="<?= baseurl('/')?>">Home</a></li>
-                <li<?php if($base== "/produkte") print(' class="selected"'); ?>><a href="<?= baseurl('/produkte')?>">Unsere Produkte</a>
+                <li<?php if ($base == "/") {
+                    print(' class="selected"');
+                } ?>><a href="<?= baseurl('/') ?>">Home</a></li>
+                <li<?php if ($base == "/produkte") {
+                    print(' class="selected"');
+                } ?>><a href="<?= baseurl('/produkte') ?>">Unsere Produkte</a>
                     <ul>
-                        <li<?php if($base == "/produkte/fleisch") print(' class="selected"'); ?>><a href="<?= baseurl('/produkte/fleisch')?>">Fleischliche Produkte</a>
+                        <li<?php if ($base == "/produkte/fleisch") {
+                            print(' class="selected"');
+                        } ?>><a href="<?= baseurl('/produkte/fleisch') ?>">Fleischliche Produkte</a>
                             <ul>
-                                <li<?php if($base == "/produkte/fleisch/rind") print(' class="selected"'); ?>><a href="<?= baseurl('/produkte/fleisch/rind')?>">Rind</a></li>
-                                <li<?php if($base == "/produkte/fleisch/kaninchen") print(' class="selected"'); ?>><a href="<?= baseurl('/produkte/fleisch/kaninchen')?>">Kaninchen</a></li>
+                                <li<?php if ($base == "/produkte/fleisch/rind") {
+                                    print(' class="selected"');
+                                } ?>><a href="<?= baseurl('/produkte/fleisch/rind') ?>">Rind</a></li>
+                                <li<?php if ($base == "/produkte/fleisch/kaninchen") {
+                                    print(' class="selected"');
+                                } ?>><a href="<?= baseurl('/produkte/fleisch/kaninchen') ?>">Kaninchen</a></li>
                             </ul>
                         </li>
-                        <li<?php if($base == "/produkte/pflanzlich") print(' class="selected"'); ?>><a href="<?= baseurl('/produkte/pflanzlich')?>">Pflanzliche Produkte</a></li>
+                        <li<?php if ($base == "/produkte/pflanzlich") {
+                            print(' class="selected"');
+                        } ?>><a href="<?= baseurl('/produkte/pflanzlich') ?>">Pflanzliche Produkte</a></li>
                     </ul>
                 </li>
-                <li<?php if($base == "/öffnungszeiten") print(' class="selected"'); ?>><a href="<?= baseurl('/öffnungszeiten')?>">Öffnungszeiten</a></li>
-                <li<?php if($base == "/kontakt") print(' class="selected"'); ?>><a href="<?= baseurl('/kontakt')?>">Kontakt</a></li>
-                <li<?php if($base == "/kontakt") print(' class="selected"'); ?>><a href="<?= baseurl('/warenkorb')?>">Warebkorb (<?= count(session()->get('cart'))?>) </a></li>
+                <li<?php if ($base == "/öffnungszeiten") {
+                    print(' class="selected"');
+                } ?>><a href="<?= baseurl('/öffnungszeiten') ?>">Öffnungszeiten</a></li>
+                <li<?php if ($base == "/kontakt") {
+                    print(' class="selected"');
+                } ?>><a href="<?= baseurl('/kontakt') ?>">Kontakt</a></li>
+                <li<?php if ($base == "/kontakt") {
+                    print(' class="selected"');
+                } ?>><a href="<?= baseurl('/warenkorb') ?>">Warebkorb (<?= $this->v('count'); ?>) </a></li>
             </ul>
         </nav>
     </header>
     <div id="site_content">
         <div class="gallery">
             <ul class="images">
-                <li class="show"><img width="950" height="300" src="images/1.jpg" alt="photo_one" /></li>
-                <li><img width="950" height="300" src="images/2.jpg" alt="seascape" /></li>
-                <li><img width="950" height="300" src="images/3.jpg" alt="seascape" /></li>
+                <li class="show"><img width="950" height="300" src="images/1.jpg" alt="photo_one"/></li>
+                <li><img width="950" height="300" src="images/2.jpg" alt="seascape"/></li>
+                <li><img width="950" height="300" src="images/3.jpg" alt="seascape"/></li>
             </ul>
         </div>
-        <?php if($this->v('news')): ?>
+        <?php if ($this->v('news')): ?>
             <div id="sidebar_container">
                 <div class="sidebar">
                     <h3>News</h3>
 
                     <h4>Neue Öffnungszeiten</h4>
                     <h5>15.08.2016</h5>
-                    <p>Wir haben neue Öffnungszeiten. Bitte beachten!<br /><a href="<?= baseurl('/öffnungszeiten')?>">Zu den Öffnungszeiten</a></p>
+                    <p>Wir haben neue Öffnungszeiten. Bitte beachten!<br/><a href="<?= baseurl('/öffnungszeiten') ?>">Zu
+                            den Öffnungszeiten</a></p>
 
                     <h4>Rindfleisch - Letzte Chance!</h4>
                     <h5>15.07.2016</h5>
-                    <p>Wir haben nur noch wenige 10-Kilo Pakete Rindfleisch!<br /><a href="<?= baseurl('/produkte/fleisch/rind')?>">Jetzt zuschlagen!</a></p>
+                    <p>Wir haben nur noch wenige 10-Kilo Pakete Rindfleisch!<br/><a
+                                href="<?= baseurl('/produkte/fleisch/rind') ?>">Jetzt zuschlagen!</a></p>
                 </div>
             </div>
         <?php endif; ?>
@@ -107,7 +127,7 @@ $base = $pathinfo['basename'];
 <script type="text/javascript" src="js/jquery.sooperfish.js"></script>
 <script type="text/javascript" src="js/image_fade.js"></script>
 <script type="text/javascript">
-    $(document).ready(function() {
+    $(document).ready(function () {
         $('ul.sf-menu').sooperfish();
     });
 </script>
