@@ -230,7 +230,7 @@ function order() {
             hideLoader();
             if (xhr.status === 422) {
                 notify({type: 'error', msg: 'Falsche Daten Eingegeben.'});
-                xhr.errors.each(function (i, el) {
+                xhr.responseJSON.errors.each(function (i, el) {
                     $('[data-id=' + el.field + ']').text(el.message).parent().addClass('has-error')
                 });
             }
