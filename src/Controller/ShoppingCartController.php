@@ -60,7 +60,7 @@ class ShoppingCartController extends AppController
             $csvReader->write($data);
             return $this->json(['status'=> 1]);
         }
-        return $this->json(['status'=> 0]);
+        return $this->json(['status'=> 0, $validationContext->toArray()]);
     }
 
     /**
