@@ -60,6 +60,7 @@ function addToShoppingCart(context) {
         id: id,
         count: val
     };
+    showLoader();
     $.ajax({
         method: 'POST',
         contentType: 'application/json',
@@ -67,11 +68,13 @@ function addToShoppingCart(context) {
         url: baseurl('warenkorb'),
         data: JSON.stringify(data),
     }).done((response) => {
+        hideLoader();
         if (response.status === 1) {
             notify({type: 'success', msg: 'Artikel hinzugefügt'});
             location.reload();
         }
     }).fail((xhr) => {
+        hideLoader();
         if (xhr.status === 422) {
             notify({type: 'error', msg: 'Falsche Daten Eingegeben.'});
         }
@@ -97,6 +100,7 @@ function save(context) {
         id: id,
         count: val
     };
+    showLoader();
     $.ajax({
         method: 'PUT',
         contentType: 'application/json',
@@ -104,11 +108,13 @@ function save(context) {
         url: baseurl('warenkorb'),
         data: JSON.stringify(data),
     }).done((response) => {
+        hideLoader();
         if (response.status === 1) {
             notify({type: 'success', msg: 'Artikel geändert'});
             location.reload();
         }
     }).fail((xhr) => {
+        hideLoader;
         if (xhr.status === 422) {
             notify({type: 'error', msg: 'Falsche Daten Eingegeben.'});
         }
@@ -122,6 +128,7 @@ function deleteItem(context) {
         id: id,
     };
     if (confirm('Wollen Sie den Artikel löschen?')) {
+        showLoader();
         $.ajax({
             method: 'DELETE',
             contentType: 'application/json',
@@ -129,11 +136,13 @@ function deleteItem(context) {
             url: baseurl('warenkorb'),
             data: JSON.stringify(data),
         }).done((response) => {
+            hideLoader();
             if (response.status === 1) {
                 notify({type: 'success', msg: 'Artikel gelöscht'});
                 location.reload();
             }
         }).fail((xhr) => {
+            hideLoader();
             if (xhr.status === 422) {
                 notify({type: 'error', msg: 'Falsche Daten Eingegeben.'});
             }
@@ -178,6 +187,7 @@ function getExchangeRate() {
 }
 
 function order() {
+    showLoader();
     var form = $('[data-id=form]');
     var data = {};
     $('span.help-block').text('');
@@ -212,10 +222,12 @@ function order() {
             url: baseurl('bestellen'),
             data: JSON.stringify(data),
         }).done((response) => {
+            hideLoader();
             if (response.status === 1) {
                 redirectTo('');
             }
         }).fail((xhr) => {
+            hideLoader();
             if (xhr.status === 422) {
                 notify({type: 'error', msg: 'Falsche Daten Eingegeben.'});
                 xhr.errors.each(function (i, el) {
@@ -223,5 +235,7 @@ function order() {
                 });
             }
         });
+    } else {
+        hideLoader()
     }
 }

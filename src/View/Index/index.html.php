@@ -10,9 +10,8 @@ Wir wünschen Ihnen viel Spass auf unserer Webseite und einen guten Appetit!
 <input type="hidden" value="<?= $this->v('success') ?>" data-id="success">
 <script>
     $(function () {
-        let success = $('input[type=hidden]');
-        if (success == 'true') {
-            notify({type: success, msg: 'Artikel erfolgreich bestellt'});
+        if ($('[data-id=success]').val() == true) {
+            notify({type: 'success', msg: 'Artikel erfolgreich bestellt'});
         }
     })
 </script>

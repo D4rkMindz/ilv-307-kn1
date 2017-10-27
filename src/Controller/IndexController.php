@@ -16,11 +16,15 @@ class IndexController extends AppController
      */
     public function index()
     {
+        $success =  $this->session->get('success') ? true : false;
+        if ($success){
+            $this->session->set('success', false);
+        }
         $viewData = [
             'title' => 'Herzlich Willkommen in Müller\'s Hofladen',
             'abbr' => 'Home',
             'news' => true,
-            'success' => $this->session->get('success') ? true : false,
+            'success' => $success,
         ];
         return $this->render('view::Index/index.html.php', $viewData);
     }
