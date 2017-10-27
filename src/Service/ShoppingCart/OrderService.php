@@ -33,6 +33,24 @@ class OrderService
         if (!$status) {
             throw new  \Exception($mail->ErrorInfo);
         }
+        // And to the customer...
+        // May blocks your server for spam, but not my problem :)
+        // If sending emails fail, delete the block below
+        $mail->setFrom($config['from']);
+        $mail->addAddress($data['email']);
+        $mail->Subject = 'Bestellung';
+        $message = "\nSie haben einen neuen Kunden: \nVorname: " . $data['firstname'] . " \nNachname: " .
+            $data['lastname'] . " \nEmail: " . $data['email'] . " \nAdresse: \n" . $data['street'] . " \n" .
+            $data['postcode'] . " " . $data['city'] . "\nBestellung:\n";
+        foreach ($data['products'] as $product) {
+            $message .= "\n\t" . $product['id'] . ' (' . $product['count'] . ' stk)';
+        }
+        $mail->Body = $message;
+        $mail->AltBody = "";
+        $status = $mail->send();
+        if (!$status) {
+            throw new  \Exception($mail->ErrorInfo);
+        }
     }
 
     /**
