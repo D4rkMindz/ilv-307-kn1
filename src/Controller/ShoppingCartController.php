@@ -51,12 +51,11 @@ class ShoppingCartController extends AppController
                 return $this->json(['status'=> 0]);
             }
             $shoppingCartService = new ShoppingCartService($this->session);
-//            $shoppingCartService->clear();
+            $shoppingCartService->clear();
             $csvReader = new CsvReader(config()->get('csv_file.dir_save'));
             $data = $orderService->sortCustomerData($data);
             ksort($data);
             $csvReader->write($data);
-//            $csvReader->writeCustomer();
             return $this->json(['status'=> 1]);
         }
         return $this->json(['status'=> 0]);
