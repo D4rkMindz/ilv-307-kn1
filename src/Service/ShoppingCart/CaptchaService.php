@@ -3,70 +3,115 @@
 
 namespace App\Service\ShoppingCart;
 
-
 use Symfony\Component\HttpFoundation\Session\Session;
 
+/**
+ * Class CaptchaService
+ */
 class CaptchaService
 {
+    /**
+     * @var resource $image png image.
+     */
     private $image;
+
+    /**
+     * @var Session $session
+     */
     private $session;
 
+    /**
+     * CaptchaService constructor.
+     * @param Session $session
+     */
     public function __construct(Session $session)
     {
         $this->session = $session;
     }
 
-    public function generate()
+    /**
+     * Generate captcha.
+     *
+     * @return string base64 png image
+     */
+    public function generate(): string
     {
         $image = $this->generateMainFrame()
             ->generateDots()
-            ->generateLines()
+//            ->generateLines()
             ->generateWord();
         return $image->generateImage();
     }
 
-    private function generateMainFrame()
+    /**
+     * Generate main image frame.
+     *
+     * @return CaptchaService $this
+     */
+    private function generateMainFrame(): CaptchaService
     {
         $this->image = imagecreatetruecolor(200, 50);
-        $background_color = imagecolorallocate($this->image, 255, 255, 255);
-        imagefilledrectangle($this->image, 0, 0, 200, 50, $background_color);
+        $backgroundColor = imagecolorallocate($this->image, 255, 255, 255);
+        imagefilledrectangle($this->image, 0, 0, 200, 50, $backgroundColor);
         return $this;
     }
 
-    private function generateLines()
+    /**
+     * Generate randome lines,
+     *
+     * @return CaptchaService $this
+     */
+    private function generateLines(): CaptchaService
     {
-        $line_color = imagecolorallocate($this->image, 64, 64, 64);
+        $lineColor = imagecolorallocate($this->image, 64, 64, 64);
         for ($i = 0; $i < 10; $i++) {
-            imageline($this->image, 0, rand() % 50, 200, rand() % 50, $line_color);
+            imageline($this->image, 0, rand() % 50, 200, rand() % 50, $lineColor);
         }
         return $this;
     }
 
-    private function generateDots()
+    /**
+     * Generate random dots.
+     *
+     * @return CaptchaService $this
+     */
+    private function generateDots(): CaptchaService
     {
-        $pixel_color = imagecolorallocate($this->image, 0, 0, 255);
+        $pixelColor = imagecolorallocate($this->image, 0, 0, 255);
         for ($i = 0; $i < 1000; $i++) {
-            imagesetpixel($this->image, rand() % 200, rand() % 50, $pixel_color);
+            imagesetpixel($this->image, rand() % 200, rand() % 50, $pixelColor);
         }
         return $this;
     }
 
-    private function generateWord()
+    /**
+     * Generate word and save it to session (captcha).
+     *
+     * @return CaptchaService $this
+     */
+    private function generateWord(): CaptchaService
     {
         $letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+        $fontFile = __DIR__ . '/../../../resources/fonts/courgette.ttf';
         $len = strlen($letters);
-        $text_color = imagecolorallocate($this->image, 0, 0, 0);
+        $textColor = imagecolorallocate($this->image, 255, 0, 0);
         $word = '';
         for ($i = 0; $i < 6; $i++) {
             $letter = $letters[rand(0, $len - 1)];
-            imagestring($this->image, 5, 5 + ($i * 30), 20, $letter, $text_color);
+//            imagestring($this->image, 5, 5 + ($i * 30), 20, $letter, $textColor);
+            imagettftext($this->image, 20, rand(0, 45), 5 + ($i * 30), 40, $textColor, $fontFile, $letter);
             $word .= $letter;
         }
         $this->session->set('captcha', $word);
         return $this;
     }
 
-    private function generateImage()
+    /**
+     * Final method to generate image.
+     *
+     * @return string base64 png image
+     */
+    private function generateImage(): string
     {
         $file = __DIR__ . '/../../../files/captchas/' . sha1(microtime(true)) . '.png';
         imagepng($this->image, $file);

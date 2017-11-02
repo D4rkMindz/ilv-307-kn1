@@ -50,37 +50,40 @@ $base = $pathinfo['basename'];
         </div>
         <nav>
             <ul class="sf-menu" id="nav">
-                <li<?php if ($base == "/") {
+                <li<?php if ($base == "template") {
                     print(' class="selected"');
                 } ?>><a href="<?= baseurl('/') ?>">Home</a></li>
-                <li<?php if ($base == "/produkte") {
+                <li<?php if ($base == "produkte") {
                     print(' class="selected"');
                 } ?>><a href="<?= baseurl('/produkte') ?>">Unsere Produkte</a>
                     <ul>
-                        <li<?php if ($base == "/produkte/fleisch") {
+                        <li<?php if ($base == "produkte/fleisch") {
                             print(' class="selected"');
                         } ?>><a href="<?= baseurl('/produkte/fleisch') ?>">Fleischliche Produkte</a>
                             <ul>
-                                <li<?php if ($base == "/produkte/fleisch/rind") {
+                                <li<?php if ($base == "produkte/fleisch/rind") {
                                     print(' class="selected"');
                                 } ?>><a href="<?= baseurl('/produkte/fleisch/rind') ?>">Rind</a></li>
-                                <li<?php if ($base == "/produkte/fleisch/kaninchen") {
+                                <li<?php if ($base == "produkte/fleisch/kaninchen") {
                                     print(' class="selected"');
                                 } ?>><a href="<?= baseurl('/produkte/fleisch/kaninchen') ?>">Kaninchen</a></li>
                             </ul>
                         </li>
-                        <li<?php if ($base == "/produkte/pflanzlich") {
+                        <li<?php if ($base == "produkte/pflanzlich") {
                             print(' class="selected"');
                         } ?>><a href="<?= baseurl('/produkte/pflanzlich') ?>">Pflanzliche Produkte</a></li>
                     </ul>
                 </li>
-                <li<?php if ($base == "/öffnungszeiten") {
+                <li<?php if ($base == "öffnungszeiten") {
                     print(' class="selected"');
                 } ?>><a href="<?= baseurl('/öffnungszeiten') ?>">Öffnungszeiten</a></li>
-                <li<?php if ($base == "/kontakt") {
+                <li<?php if ($base == "kontakt") {
                     print(' class="selected"');
                 } ?>><a href="<?= baseurl('/kontakt') ?>">Kontakt</a></li>
-                <li<?php if ($base == "/kontakt") {
+                <li<?php if ($base == "wetter") {
+                    print(' class="selected"');
+                } ?>><a href="<?= baseurl('/wetter') ?>">Wetter</a></li>
+                <li<?php if ($base == "warenkorb") {
                     print(' class="selected"');
                 } ?>><a href="<?= baseurl('/warenkorb') ?>">Warebkorb (<?= $this->v('count'); ?>) </a></li>
             </ul>

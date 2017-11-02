@@ -63,6 +63,20 @@ $config['publicJsPath'] = __DIR__ . '/../public/js';
 
 $config['routes'] = $bag->read(__DIR__ . '/routes.php');
 
+
+$config['weather']['key'] = '';
+$config['weather']['url']['base'] = 'https://api.openweathermap.org/data/2.5/';
+$config['weather']['cities'] = [
+    'Basel',
+    'Zurich',
+    'Bern',
+    'Genf',
+    'Chur',
+    'Stgallen',
+    'Bellinzona',
+    'Sion',
+];
+
 if (file_exists(__DIR__ . '/../../env.php')) {
     $env = $bag->read(__DIR__ . '/../../env.php');
 } elseif (file_exists(__DIR__ . '/env.php')) {

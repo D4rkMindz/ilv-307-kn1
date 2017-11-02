@@ -59,6 +59,7 @@
             <input type="email" class="input" data-id="mail" placeholder="Email" required>
             <span class="help-block" data-id="mail-error"></span>
             <input type="text" class="input" data-id="captcha" placeholder="Please enter the captcha code" required>
+            <span class="help-block" data-id="captcha-error"></span>
         </div>
         <div class="captcha">
             <img src="<?= $this->v('captcha')?>" alt="captcha">

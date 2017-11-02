@@ -13,6 +13,7 @@ class OrderValidation
         $validationContext = new ValidationContext('Bitte überprüfen Sie ihre Eingabe');
         $this->validateLength($data, $validationContext);
         $this->validateEmail($data['mail'], $validationContext);
+        $this->validateCaptcha($data['captcha'], $validationContext);
         return $validationContext;
     }
 
@@ -41,6 +42,14 @@ class OrderValidation
     {
         if (!is_email($email)) {
             $validationContext->setError('mail', 'Keine gültige Email Adresse');
+        }
+    }
+
+    private function validateCaptcha(string $captcha, ValidationContext $validationContext)
+    {
+        $original = strtolower(session()->get('captcha'));
+        if ($original !== strtolower($captcha)){
+            $validationContext->setError('captcha', 'Captcha stimmt nicht überein');
         }
     }
 }

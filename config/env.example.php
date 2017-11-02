@@ -6,4 +6,6 @@ $env['mail']['host'] = 'debugmail.io';
 $env['mail']['port'] = 25;
 $env['mail']['username'] = ''; // like "to"
 $env['mail']['password'] = ''; // the provided password
+
+$env['weather']['key'] = ''; // your https://openweathermap.org/api API key
 return $env;
