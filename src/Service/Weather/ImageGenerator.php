@@ -4,39 +4,28 @@
 namespace App\Service\Weather;
 
 
-class ImageGenerator
+abstract class ImageGenerator
 {
-    private $image;
-    private $date;
-    private $data;
+    protected $data;
+    protected $cities;
+    protected $image;
 
-    public function __construct(string $date, array $data)
-    {
-        $this->image = imagecreatefrompng(__DIR__ . '/../../../files/weather/base.png');
-        $this->date = $date;
-        $this->data = $data;
-    }
+    protected abstract function generate();
 
-    public function generate()
+    protected function setCity($x, $y, $name, $img)
     {
-        $img = __DIR__ . '/../../../files/weather/icons' . $this->data['weather'][0]['icon'];
-        return $this->setCity(0, 0, $img)
-            ->generateImage();
-    }
+        $fontFile = __DIR__ . '/../../../resources/fonts/roboto.ttf';
+        $im2 = imagecreatefrompng($img);
 
-    private function setCity($x, $y, $img)
-    {
-        imagealphablending($img, true);
-        imagesavealpha($img, true);
-        imagecopy($img, $this->image, $x, $y, 0, 0, 100, 100);
+        imagecopy($this->image, $im2, $x, $y, 0, 0, imagesx($im2), imagesy($im2));
+        imagettftext($this->image, 12, 0, $x + imagesx($im2), $y + (imagesy($im2) / 2), 0, $fontFile, $name);
         return $this;
     }
 
-    private function generateImage()
+    protected function generateImage($date)
     {
-        $file = __DIR__ . '/../../../files/weather/' . $this->date . '.png';
+        $file = __DIR__ . '/../../../public/images/weather/' . $date . '.png';
         imagepng($this->image, $file);
-        $png = file_get_contents($file);
-        return 'data:image/png;base64,' . base64_encode($png);
+        return 'images/weather/' . $date . '.png';
     }
 }

@@ -19,12 +19,12 @@ $config['csv_file']['dir'] = __DIR__ . '/../files/produkte.csv';
 $config['csv_file']['dir_save'] = __DIR__ . '/../files/kunden.csv';
 
 $config['mail']['from'] = '';
-$config['mail']['to']  = '';
-$config['mail']['host']  = '';
-$config['mail']['port']  = '';
-$config['mail']['username']  = '';
+$config['mail']['to'] = '';
+$config['mail']['host'] = '';
+$config['mail']['port'] = '';
+$config['mail']['username'] = '';
 $config['mail']['password'] = '';
-$config['mail']['charset']  = 'utf8';
+$config['mail']['charset'] = 'utf8';
 
 $config['assets']['cachePath'] = __DIR__ . '/../tmp/cache/';
 $config['assets']['minimize'] = false;
@@ -67,14 +67,46 @@ $config['routes'] = $bag->read(__DIR__ . '/routes.php');
 $config['weather']['key'] = '';
 $config['weather']['url']['base'] = 'https://api.openweathermap.org/data/2.5/';
 $config['weather']['cities'] = [
-    'Basel',
-    'Zurich',
-    'Bern',
-    'Genf',
-    'Chur',
-    'Stgallen',
-    'Bellinzona',
-    'Sion',
+    'Basel' => [
+        'name' => 'Basel',
+        'x' => 430,
+        'y' => 100,
+    ],
+    'Zurich' => [
+        'name' => 'Zurich',
+        'x' => 650,
+        'y' => 150,
+    ],
+    'Bern' => [
+        'name' => 'Bern',
+        'x' => 400,
+        'y' => 330,
+    ],
+    'Genève' => [
+        'name' => 'Genève',
+        'x' => 50,
+        'y' => 580,
+    ],
+    'Chur' => [
+        'name' => 'Chur',
+        'x' => 900,
+        'y' => 350,
+    ],
+    'St. Gallen' => [
+        'name' => 'St. Gallen',
+        'x' => 870,
+        'y' => 120,
+    ],
+    'Bellinzona' => [
+        'name' => 'Bellinzona',
+        'x' => 760,
+        'y' => 600,
+    ],
+    'Sion' => [
+        'name' => 'Sion',
+        'x' => 350,
+        'y' => 580,
+    ],
 ];
 
 if (file_exists(__DIR__ . '/../../env.php')) {
