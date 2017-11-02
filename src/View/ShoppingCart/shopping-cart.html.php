@@ -58,6 +58,10 @@
             <span class="help-block" data-id="city-error"></span>
             <input type="email" class="input" data-id="mail" placeholder="Email" required>
             <span class="help-block" data-id="mail-error"></span>
+            <input type="text" class="input" data-id="captcha" placeholder="Please enter the captcha code" required>
+        </div>
+        <div class="captcha">
+            <img src="<?= $this->v('captcha')?>" alt="captcha">
         </div>
         <button class="button" onclick="order()">
             Bestellen

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\ShoppingCart\CaptchaService;
 use App\Service\ShoppingCart\OrderService;
 use App\Service\ShoppingCart\OrderValidation;
 use App\Service\ShoppingCart\ShoppingCartService;
@@ -24,8 +25,11 @@ class ShoppingCartController extends AppController
         $shoppingCartService = new ShoppingCartService($this->session);
         $count = $shoppingCartService->getCount();
         $data = $shoppingCartService->getCart(true);
+        $captchaService = new CaptchaService($this->session);
+        $captcha = $captchaService->generate();
         $viewData = [
-            'count'=>$count,
+            'captcha'=> $captcha,
+            'count' => $count,
             'data' => $data,
             'title' => empty($data) ? 'Dein Warenkorb ist leer' : 'Dein Warenkorb',
             'abbr' => 'Warenkorb',
@@ -42,15 +46,15 @@ class ShoppingCartController extends AppController
     public function order()
     {
         $data = $this->getJsonRequest($this->request);
-        $orderValidation= new OrderValidation();
+        $orderValidation = new OrderValidation();
         $validationContext = $orderValidation->validate($data);
-        if ($validationContext->success()){
+        if ($validationContext->success()) {
             $orderService = new OrderService();
             try {
                 $orderService->sendEmail($data);
-            } catch (\Exception $e){
-                logger('email-error')->addAlert($e->getMessage() . ' | ' .  $e->getTraceAsString());
-                return $this->json(['status'=> 0]);
+            } catch (\Exception $e) {
+                logger('email-error')->addAlert($e->getMessage() . ' | ' . $e->getTraceAsString());
+                return $this->json(['status' => 0]);
             }
             $shoppingCartService = new ShoppingCartService($this->session);
             $shoppingCartService->clear();
@@ -58,9 +62,9 @@ class ShoppingCartController extends AppController
             $data = $orderService->sortCustomerData($data);
             ksort($data);
             $csvReader->write($data);
-            return $this->json(['status'=> 1]);
+            return $this->json(['status' => 1]);
         }
-        return $this->json(['status'=> 0, $validationContext->toArray()]);
+        return $this->json(['status' => 0, $validationContext->toArray()]);
     }
 
     /**
