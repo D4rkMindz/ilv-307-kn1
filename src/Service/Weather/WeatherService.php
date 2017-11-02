@@ -4,6 +4,8 @@
 namespace App\Service\Weather;
 
 
+use DateTime;
+
 class WeatherService extends ImageGenerator
 {
     protected $data;
@@ -23,7 +25,10 @@ class WeatherService extends ImageGenerator
         $dirs = $this->scandir(__DIR__ . '/../../../public/images/weather/');
         rsort($dirs);
         $date = date('Y-m-d_H');
-        if (in_array($date, $dirs) && strtotime($date) > strtotime($dirs[0])){
+        $now = DateTime::createFromFormat('Y-m-d_H', $date);
+        $old = DateTime::createFromFormat('Y-m-d_H', $dirs[0]);
+        if ($now > $old) {
+            rmdir($dirs[0]);
             for ($i = 0; $i < 7; $i++) {
                 $date = $i;
                 $this->image = imagecreatefrompng(__DIR__ . '/../../../files/weather/base.png');

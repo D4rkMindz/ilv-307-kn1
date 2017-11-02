@@ -231,7 +231,7 @@ function order() {
             if (xhr.status === 422) {
                 notify({type: 'error', msg: 'Falsche Daten Eingegeben.'});
                 var errors = xhr.responseJSON[0].errors;
-                $.each(errors,function (i, el) {
+                $.each(errors, function (i, el) {
                     $('[data-id=' + el.field + '-error]').text(el.message).parent().addClass('has-error')
                 });
             }
@@ -239,4 +239,16 @@ function order() {
     } else {
         hideLoader()
     }
+}
+
+function activateImage(page, prefix, context) {
+    var $this = $(context);
+    $this.parent().find('.active').removeClass('active');
+    $this.addClass('active');
+    var old = $('[data-id=' + prefix + ']').find('.shown');
+    old.addClass('hidden');
+    old.removeClass('shown');
+    var el = $('[data-id=' + prefix + page + ']');
+    el.removeClass('hidden');
+    el.addClass('shown');
 }

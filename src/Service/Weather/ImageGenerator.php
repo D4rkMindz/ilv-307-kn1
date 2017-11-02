@@ -43,6 +43,7 @@ abstract class ImageGenerator
         foreach ($images as $key => $image) {
             $images[$key] = 'images/weather/' . $dirs[0] . '/' . $image;
         }
+        $images = array_values($images);
         return $images;
     }
 
