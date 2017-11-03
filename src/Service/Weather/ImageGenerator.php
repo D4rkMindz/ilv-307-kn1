@@ -18,12 +18,6 @@ abstract class ImageGenerator
 
     protected function check($forceReload = false)
     {
-        if ($forceReload){
-            $this->loadData()
-                ->generate();
-            $this->images = $this->read();
-            return;
-        }
         $dir = __DIR__ . '/../../../public/images/' . $this->outputdir . '/';
         if (!is_dir($dir)) {
             mkdir($dir);
@@ -37,9 +31,11 @@ abstract class ImageGenerator
         } else {
             $old = false;
         }
-        if ($now > $old) {
+        if ($now > $old || $forceReload) {
             if (!empty($dirs)) {
-                rmdir($dir . $dirs[0]);
+                foreach ($dirs as $d){
+                    rrmdir($dir . $d);
+                }
             }
             $this->loadData()
                 ->generate();

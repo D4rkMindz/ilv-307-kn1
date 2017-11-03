@@ -43,3 +43,22 @@ You can edit the /files/produkte.csv file to update your product data.
  
  Sometimes (mostly on full hour) an error can occur (Notice: Undefined index: list in C:\xampp\htdocs\template\src\Service\Weather\WeatherService.php on line 37)
  If this happens, make sure you have enough API Calls left. If not, just edit the last [date].json filename and set the last number (after the _ underscore) to the actual time (hour).
+ To put the application in "Prod mode" please uncomment 
+ ```
+//error_reporting(0);
+//ini_set('display_errors', '0');
+ ```
+ in the /config/config.php file. Afterwards you have to delete the code that was uncommented at the beginning.
+ 
+ ### Wetter page
+ You can force reload the weatherdata by adding the "_r=1" parameter to the URL. You can also specify which record should be reloaded by adding the parameter "_t". 
+ 
+ _t=0 => will not work
+ 
+ _t=1 => forcereload weather
+ 
+ _t=2 => forcereload humidity
+ 
+ _t=3 => forcereload temperature
+ 
+ _t=4 => forcereload wind

@@ -17,6 +17,12 @@ config/ant.test.properties
 ant.*
 !ant.example.*
 
+
+public/images/humidity/*
+public/images/temperature/*
+public/images/weather/*
+public/images/wind/*
+
 #Project dependencies
 !vendor/
 vendor/*
