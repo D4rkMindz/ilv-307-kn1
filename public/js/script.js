@@ -284,7 +284,7 @@ function getCityData(context) {
 }
 
 function fillWeatherData(data) {
-    var html = '<h1></h1>' +
+    var html = '<h1>' + data.name + '</h1>' +
         '<p>Wetter: </p><img src="' + data.icon + '" alt="wetter-icon">' +
         '<table>' +
         '<tr>' +
