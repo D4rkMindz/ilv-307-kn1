@@ -20,7 +20,7 @@ class TemperatureService extends ImageGenerator
      */
     public function getImages($forceReload = false): array
     {
-        $this->check($forceReload);
+        $this->load($forceReload);
         return $this->images;
     }
 
@@ -48,6 +48,16 @@ class TemperatureService extends ImageGenerator
         }
     }
 
+    /**
+     * Set temperature.
+     *
+     * @param int $x X position on image
+     * @param int $y Y position on image
+     * @param string $name name of the city
+     * @param string $min minimum temperature
+     * @param string $max maximum temperature
+     * @return TemperatureService $this
+     */
     protected function setTemperature($x, $y, $name, $min, $max)
     {
         $fontFile = __DIR__ . '/../../../resources/fonts/falling-sky.ttf';

@@ -6,8 +6,17 @@ namespace App\Service\Weather;
 
 use App\Util\ValidationContext;
 
+/**
+ * Class CityValidation
+ */
 class CityValidation
 {
+    /**
+     * Validate city input.
+     *
+     * @param array $data
+     * @return ValidationContext
+     */
     public static function validate($data)
     {
         $validationContext = new ValidationContext('Bitte überprüfen Sie Ihre Eingabe');

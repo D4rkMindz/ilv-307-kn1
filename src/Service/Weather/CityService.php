@@ -3,9 +3,17 @@
 
 namespace App\Service\Weather;
 
-
+/**
+ * Class CityService
+ */
 class CityService
 {
+    /**
+     * Format received /weather?q=xx data.
+     *
+     * @param array $data API data
+     * @return array
+     */
     public static function format($data)
     {
         $deg = array_key_exists('deg', $data['wind']) ? $data['wind']['deg'] : 0;
@@ -20,6 +28,12 @@ class CityService
         ];
     }
 
+    /**
+     * Get Wind direction name as string.
+     *
+     * @param $deg
+     * @return string $name
+     */
     private static function getWindDirectionName($deg)
     {
         //src: http://snowfence.umn.edu/Components/winddirectionanddegreeswithouttable3.htm

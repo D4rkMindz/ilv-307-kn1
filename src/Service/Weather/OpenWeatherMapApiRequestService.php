@@ -9,7 +9,7 @@ class OpenWeatherMapApiRequestService
     /**
      * Get data from api.openweathermap.org
      *
-     * @param string $url
+     * @param bool $forceReload indicate if data MUST be reloaded
      * @return mixed
      */
     public static function getCities($forceReload)
@@ -31,6 +31,12 @@ class OpenWeatherMapApiRequestService
         return $data;
     }
 
+    /**
+     * Make curl request.
+     *
+     * @param $url
+     * @return mixed
+     */
     private static function curl($url)
     {
         $ch = curl_init();
@@ -43,6 +49,12 @@ class OpenWeatherMapApiRequestService
         return json_decode($data, true);
     }
 
+    /**
+     * Public GET function.
+     *
+     * @param $url
+     * @return mixed
+     */
     public static function get($url)
     {
         return self::curl($url);

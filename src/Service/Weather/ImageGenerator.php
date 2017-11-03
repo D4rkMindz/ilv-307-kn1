@@ -3,9 +3,11 @@
 
 namespace App\Service\Weather;
 
-
 use DateTime;
 
+/**
+ * Class ImageGenerator
+ */
 abstract class ImageGenerator
 {
     protected $data;
@@ -13,7 +15,19 @@ abstract class ImageGenerator
     protected $image;
     protected $outputdir;
 
-    protected function check($forceReload = false)
+    /**
+     * Set cities and specific values in this method.
+     *
+     * @return void
+     */
+    protected abstract function generate();
+
+    /**
+     * Main function to call.
+     *
+     * @param bool $forceReload
+     */
+    protected function load($forceReload = false)
     {
         $dir = __DIR__ . '/../../../public/images/' . $this->outputdir . '/';
         if (!is_dir($dir)) {
@@ -41,6 +55,12 @@ abstract class ImageGenerator
         return;
     }
 
+    /**
+     * Scan dir for images.
+     *
+     * @param $dir
+     * @return array
+     */
     protected function scandir($dir)
     {
         $dirs = array_diff(scandir($dir), ['.', '..']);;
@@ -53,15 +73,23 @@ abstract class ImageGenerator
         return $return;
     }
 
-    protected abstract function generate();
-
+    /**
+     * Load data.
+     *
+     * @param $forceReload
+     * @return $this
+     */
     protected function loadData($forceReload)
     {
         $this->data = OpenWeatherMapApiRequestService::getCities($forceReload);
         return $this;
     }
 
-
+    /**
+     * Read directory.
+     *
+     * @return array
+     */
     protected function read()
     {
         $dir = __DIR__ . '/../../../public/images/weather/';
@@ -75,6 +103,11 @@ abstract class ImageGenerator
         return $images;
     }
 
+    /**
+     * Final generation method
+     *
+     * @param $date
+     */
     protected function generateImage($date)
     {
         $dir = date('Y-m-d_H');

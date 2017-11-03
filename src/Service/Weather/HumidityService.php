@@ -19,7 +19,7 @@ class HumidityService extends ImageGenerator
      */
     public function getImages($forceReload = false): array
     {
-        $this->check($forceReload);
+        $this->load($forceReload);
         return $this->images;
     }
 
