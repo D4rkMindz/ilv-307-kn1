@@ -3,18 +3,30 @@
 
 namespace App\Service\Weather;
 
+/**
+ * Class WeatherService
+ */
 class WeatherService extends ImageGenerator
 {
     protected $outputdir = 'weather';
     protected $data;
     protected $images = [];
 
-    public function getImages(): array
+    /**
+     * Get Images
+     *
+     * @param bool $forceReload
+     * @return array with image urls
+     */
+    public function getImages($forceReload = false): array
     {
-        $this->check();
+        $this->check($forceReload);
         return $this->images;
     }
 
+    /**
+     * Generate image function
+     */
     protected function generate()
     {
         for ($i = 0; $i < 7; $i++) {
@@ -30,14 +42,23 @@ class WeatherService extends ImageGenerator
                     $icon);
             }
             imagettftext($this->image, 25, 0, 50, 50, ImageColorAllocate($this->image, 186, 0, 0),
-                __DIR__ . '/../../../resources/fonts/roboto.ttf', date('d-m-Y H:i', $date));
+                __DIR__ . '/../../../resources/fonts/falling-sky.ttf', date('d-m-Y H:i', $date));
             $this->generateImage($date);
         }
     }
 
+    /**
+     * Set wind.
+     *
+     * @param int $x X position on image
+     * @param int $y Y position on image
+     * @param string $name name of the city
+     * @param string $img icon image directory
+     * @return WeatherService $this
+     */
     protected function setWeather($x, $y, $name, $img)
     {
-        $fontFile = __DIR__ . '/../../../resources/fonts/roboto.ttf';
+        $fontFile = __DIR__ . '/../../../resources/fonts/falling-sky.ttf';
         $im2 = imagecreatefrompng($img);
 
         imagecopy($this->image, $im2, $x, $y, 0, 0, imagesx($im2), imagesy($im2));

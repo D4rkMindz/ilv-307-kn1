@@ -38,3 +38,8 @@ You can edit the /files/produkte.csv file to update your product data.
  * bildname = place the image into the /public/images/{kategorie}/ folder and just write the image name (like kaninchen_wuerste.jpg)
  
  Please keep in mind, that you are editing a [CSV File](https://www.thoughtspot.com/blog/6-rules-creating-valid-csv-files "CSV Basics").
+ 
+ ## Notice
+ 
+ Sometimes (mostly on full hour) an error can occur (Notice: Undefined index: list in C:\xampp\htdocs\template\src\Service\Weather\WeatherService.php on line 37)
+ If this happens, make sure you have enough API Calls left. If not, just edit the last [date].json filename and set the last number (after the _ underscore) to the actual time (hour).

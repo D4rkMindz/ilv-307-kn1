@@ -16,8 +16,14 @@ abstract class ImageGenerator
 
     protected abstract function generate();
 
-    protected function check()
+    protected function check($forceReload = false)
     {
+        if ($forceReload){
+            $this->loadData()
+                ->generate();
+            $this->images = $this->read();
+            return;
+        }
         $dir = __DIR__ . '/../../../public/images/' . $this->outputdir . '/';
         if (!is_dir($dir)) {
             mkdir($dir);
@@ -39,7 +45,7 @@ abstract class ImageGenerator
                 ->generate();
         }
         $this->images = $this->read();
-
+        return;
     }
 
     protected function generateImage($date)

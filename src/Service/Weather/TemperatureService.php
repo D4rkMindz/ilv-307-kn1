@@ -12,9 +12,9 @@ class TemperatureService extends ImageGenerator
     protected $data;
     protected $images = [];
 
-    public function getImages()
+    public function getImages($forceReload = false)
     {
-        $this->check();
+        $this->check($forceReload);
         return $this->images;
     }
 
@@ -33,17 +33,17 @@ class TemperatureService extends ImageGenerator
                     $this->cities[$city]['name'], $min, $max);
             }
             imagettftext($this->image, 25, 0, 50, 50, ImageColorAllocate($this->image, 186, 0, 0),
-                __DIR__ . '/../../../resources/fonts/roboto.ttf', date('d-m-Y H:i', $date));
+                __DIR__ . '/../../../resources/fonts/falling-sky.ttf', date('d-m-Y H:i', $date));
             $this->generateImage($date);
         }
     }
 
     protected function setTemperature($x, $y, $name, $min, $max)
     {
-        $fontFile = __DIR__ . '/../../../resources/fonts/roboto.ttf';
+        $fontFile = __DIR__ . '/../../../resources/fonts/falling-sky.ttf';
         $red = ImageColorAllocate($this->image, 186, 0, 0);
         $orange = ImageColorAllocate($this->image, 188, 97, 0);
-        $blue = ImageColorAllocate($this->image, 188, 97, 0);
+        $blue = ImageColorAllocate($this->image, 0, 86, 226);
 
         $minColor = $orange;
         $maxColor = $orange;
@@ -61,10 +61,9 @@ class TemperatureService extends ImageGenerator
             $maxColor = $red;
         }
 
-        imagettftext($this->image, 12, 0, $x - 6, $y, $minColor, $fontFile, 'Min: ' . round($min) . '°');
-        imagettftext($this->image, 12, 0, $x + 6, $y, $maxColor, $fontFile, 'Max: ' . round($max) . '°');
-        imagettftext($this->image, 12, 0, $x, $y + 20, ImageColorAllocate($this->image, 186, 0, 0), $fontFile,
-            $name . '%');
+        imagettftext($this->image, 12, 0, $x, $y - 20, $minColor, $fontFile, 'Min: ' . round($min) . '°');
+        imagettftext($this->image, 12, 0, $x, $y, $maxColor, $fontFile, 'Max: ' . round($max) . '°');
+        imagettftext($this->image, 12, 0, $x, $y + 20, ImageColorAllocate($this->image, 186, 0, 0), $fontFile, $name);
         return $this;
     }
 }
