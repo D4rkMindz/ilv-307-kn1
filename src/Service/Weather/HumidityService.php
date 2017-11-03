@@ -6,21 +6,21 @@ namespace App\Service\Weather;
 
 use DateTime;
 
-class WeatherService extends ImageGenerator
+class HumidityService extends ImageGenerator
 {
     protected $data;
     private $images = [];
 
-    public function getImages(): array
+    public function getImages()
     {
         $this->loadData()
             ->generate();
         return $this->images;
     }
-
+    
     protected function generate()
     {
-        $dir = __DIR__ . '/../../../public/images/weather/';
+        $dir = __DIR__ . '/../../../public/images/humidity/';
         if (!is_dir($dir)){
             mkdir($dir);
         }
@@ -28,13 +28,9 @@ class WeatherService extends ImageGenerator
         rsort($dirs);
         $date = date('Y-m-d_H');
         $now = DateTime::createFromFormat('Y-m-d_H', $date);
-        if ($dirs[0]){
-            $old = DateTime::createFromFormat('Y-m-d_H', $dirs[0]);
-        } else {
-            $old = false;
-        }
+        $old = DateTime::createFromFormat('Y-m-d_H', $dirs[0]);
         if ($now > $old) {
-            rmdir($dir . $dirs[0]);
+            rmdir($dirs[0]);
             for ($i = 0; $i < 7; $i++) {
                 $date = $i;
                 $this->image = imagecreatefrompng(__DIR__ . '/../../../files/weather/base.png');
@@ -42,9 +38,8 @@ class WeatherService extends ImageGenerator
                 foreach ($this->data as $key => $record) {
                     $date = $record['list'][$i]['dt'];
                     $city = $record['city']['name'];
-                    $icon = __DIR__ . '/../../../files/weather/icons/' . $record['list'][$i]['weather'][0]['icon'] . '.png';
-                    $this->setWeather($this->cities[$city]['x'], $this->cities[$city]['y'], $this->cities[$city]['name'],
-                        $icon);
+                    $humidity = $record['list'][$i]['humidity'];
+                    $this->setHumidity($this->cities[$city]['x'], $this->cities[$city]['y'], $this->cities[$city]['name'], $humidity);
                 }
                 imagettftext($this->image, 25, 0, 50, 50, ImageColorAllocate($this->image, 186, 0, 0),
                     __DIR__ . '/../../../resources/fonts/roboto.ttf', date('d-m-Y H:i', $date));
@@ -54,14 +49,13 @@ class WeatherService extends ImageGenerator
         $this->images = $this->read();
     }
 
-    protected function setWeather($x, $y, $name, $img)
+
+    protected function setHumidity($x, $y, $name, $humidity)
     {
         $fontFile = __DIR__ . '/../../../resources/fonts/roboto.ttf';
-        $im2 = imagecreatefrompng($img);
-
-        imagecopy($this->image, $im2, $x, $y, 0, 0, imagesx($im2), imagesy($im2));
-        imagettftext($this->image, 12, 0, $x + imagesx($im2), $y + (imagesy($im2) / 2),
-            ImageColorAllocate($this->image, 186, 0, 0), $fontFile, $name);
+        // TODO Test this method.
+        imagettftext($this->image, 12, 0, $x, $y, ImageColorAllocate($this->image, 186, 0, 0), $fontFile, $name);
+        imagettftext($this->image, 12, 0, $x, $y + 20, ImageColorAllocate($this->image, 186, 0, 0), $fontFile, $humidity . '%');
         return $this;
     }
 }

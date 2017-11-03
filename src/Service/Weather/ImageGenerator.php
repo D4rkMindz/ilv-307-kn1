@@ -10,18 +10,8 @@ abstract class ImageGenerator
     protected $cities;
     protected $image;
 
+
     protected abstract function generate();
-
-    protected function setCity($x, $y, $name, $img)
-    {
-        $fontFile = __DIR__ . '/../../../resources/fonts/roboto.ttf';
-        $im2 = imagecreatefrompng($img);
-
-        imagecopy($this->image, $im2, $x, $y, 0, 0, imagesx($im2), imagesy($im2));
-        imagettftext($this->image, 12, 0, $x + imagesx($im2), $y + (imagesy($im2) / 2),
-            ImageColorAllocate($this->image, 186, 0, 0), $fontFile, $name);
-        return $this;
-    }
 
     protected function generateImage($date)
     {
@@ -58,4 +48,35 @@ abstract class ImageGenerator
         }
         return $return;
     }
+
+
+    protected function loadData()
+    {
+        $this->cities = config()->get('weather.cities');
+        $jsonFile = __DIR__ . '/../../../files/' . date('Y-m-d_H') . '.json';
+        $data = json_decode(file_get_contents($jsonFile), true);
+        if (!empty($data)) {
+            $this->data = $data;
+            return $this;
+        }
+        foreach ($this->cities as $city) {
+            $this->data[] = $this->getData($city['name']);
+        }
+        $json = json_encode($this->data);
+        file_put_contents($jsonFile, $json);
+        return $this;
+    }
+
+    private function getData($location)
+    {
+        $config = config();
+        $url = $config->get('weather.url.base') . 'forecast/daily?q=' . $location . '&units=metric&appid=' . $config->get('weather.key');
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $data = curl_exec($ch);
+        curl_close($ch);
+        return json_decode($data, true);
+    }
+
 }
