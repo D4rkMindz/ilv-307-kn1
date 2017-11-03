@@ -12,12 +12,21 @@ class TemperatureService extends ImageGenerator
     protected $data;
     protected $images = [];
 
-    public function getImages($forceReload = false)
+    /**
+     * Get Images
+     *
+     * @param bool $forceReload
+     * @return array with image urls
+     */
+    public function getImages($forceReload = false): array
     {
         $this->check($forceReload);
         return $this->images;
     }
 
+    /**
+     * Generate image function
+     */
     protected function generate()
     {
         for ($i = 0; $i < 7; $i++) {
@@ -47,17 +56,17 @@ class TemperatureService extends ImageGenerator
 
         $minColor = $orange;
         $maxColor = $orange;
-        if ($min < 10) {
+        if ($min <= 10) {
             $minColor = $blue;
         }
-        if ($min > 30) {
+        if ($min >= 30) {
             $minColor = $red;
         }
 
-        if ($max < 10) {
+        if ($max <= 10) {
             $maxColor = $blue;
         }
-        if ($max > 30) {
+        if ($max >= 30) {
             $maxColor = $red;
         }
 

@@ -100,14 +100,8 @@ abstract class ImageGenerator
 
     private function getData($location)
     {
-        $config = config();
-        $url = $config->get('weather.url.base') . 'forecast/daily?q=' . $location . '&units=metric&appid=' . $config->get('weather.key');
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        $data = curl_exec($ch);
-        curl_close($ch);
-        return json_decode($data, true);
+        $url = 'forecast/daily?q=' . $location . '&units=metric';
+        return OpenWeatherMapApiRequestService::get($url);
     }
 
 }

@@ -22,6 +22,15 @@ $conf = [
         'prefix' => 'wind',
     ],
 ];
+?>
+<div id="city">
+    <input type="text" class="input inline" style="width: 20rem" placeholder="Bitte geben Sie eine Stadt ein" data-id="city">
+    <button class="button inline" onclick="getCityData(this)">Suchen</button>
+    <br>
+    <span class="help-block" data-id="city-error"></span>
+    <div data-id="data"></div>
+</div>
+<?php
 foreach ($conf as $entry) :?>
     <h1><?= $this->e($entry['title']); ?></h1>
     <div data-id="<?= $this->e($entry['prefix']); ?>">

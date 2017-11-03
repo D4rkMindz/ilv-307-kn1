@@ -37,6 +37,9 @@ $routes->get('/shopping_cart_get')->addDefaults(['_auth'=> false]);
 $routes->add('/weather_get', route('GET', '/wetter', ['App\Controller\WeatherController','index']));
 $routes->get('/weather_get')->addDefaults(['_auth'=> false]);
 
+$routes->add('/weather_post', route('POST', '/wetter', ['App\Controller\WeatherController','getByCity']));
+$routes->get('/weather_post')->addDefaults(['_auth'=> false]);
+
 $routes->add('/shopping_cart_post', route('POST', '/warenkorb', ['App\Controller\ShoppingCartController','placeItem']));
 $routes->get('/shopping_cart_post')->addDefaults(['_auth'=> false]);
 

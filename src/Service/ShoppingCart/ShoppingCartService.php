@@ -184,6 +184,9 @@ class ShoppingCartService
         $def = [];
         if (!empty($sorted)){
             foreach ($sorted as $key => $value) {
+                if (empty($res[$value['id']])){
+                    $res[$value['id']] = 0;
+                }
                 $res[$value['id']] += $value['count'];
             }
             foreach ($res as $key => $value) {

@@ -1,17 +1,29 @@
 <?php
 
-
 namespace App\Controller;
 
-
 use App\Service\ShoppingCart\ShoppingCartService;
+use App\Service\Weather\CityService;
+use App\Service\Weather\CityValidation;
 use App\Service\Weather\HumidityService;
+use App\Service\Weather\OpenWeatherMapApiRequestService;
 use App\Service\Weather\TemperatureService;
 use App\Service\Weather\WeatherService;
+use App\Service\Weather\WindDirectionService;
 use App\Service\Weather\WindService;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Class WeatherController
+ */
 class WeatherController extends AppController
 {
+    /**
+     * Index.
+     *
+     * @return Response
+     */
     public function index()
     {
         $forceReload = (bool)$this->request->query->get('_r');
@@ -65,8 +77,36 @@ class WeatherController extends AppController
             'count' => $count,
             'title' => 'Müller\'s Hofladen Wetter',
             'abbr' => 'Wetter',
-            'news' => false,
+            'news' => true,
+            'city_data' => [],
         ];
         return $this->render('view::Weather/weather.html.php', $viewData);
+    }
+
+    /**
+     * Get City by ID.
+     *
+     * @return JsonResponse
+     */
+    public function getByCity()
+    {
+        $data = $this->getJsonRequest($this->request);
+        $validationContext = CityValidation::validate($data);
+        if (!$validationContext->success()){
+            return $this->json($validationContext->toArray(), 422);
+        }
+        $url = 'weather?q=' . $data['city'] . '&units=metric';
+        $data = OpenWeatherMapApiRequestService::get($url);
+        if ($data['cod'] === 200){
+            $windDirectionService = new WindDirectionService();
+            $data = CityService::format($data);
+            $data['wurl'] =$windDirectionService->create($data['wdir']);
+            $status = 200;
+        } else {
+            $validationContext->setError('city', 'Stadt existiert nicht');
+            $data = $validationContext->toArray();
+            $status = 422;
+        }
+        return $this->json($data, $status);
     }
 }

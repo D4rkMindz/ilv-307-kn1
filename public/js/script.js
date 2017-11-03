@@ -252,3 +252,57 @@ function activateImage(page, prefix, context) {
     el.removeClass('hidden');
     el.addClass('shown');
 }
+
+function getCityData(context) {
+    showLoader();
+    var $this = $(context);
+    var parent = $this.parent();
+    $('.has-error').removeClass('has-error');
+    $('[data-id=city-error]').text('');
+    parent.find()
+    var city = {city: parent.find('[data-id=city]').val()};
+    $.ajax({
+        method: 'POST',
+        contentType: 'application/json',
+        processData: true,
+        url: baseurl('wetter'),
+        data: JSON.stringify(city),
+    }).done((response) => {
+        hideLoader();
+        fillWeatherData(response)
+    }).fail((xhr) => {
+        hideLoader();
+        if (xhr.status === 422) {
+            notify({type: 'error', msg: 'Falsche Daten Eingegeben.'});
+            var errors = xhr.responseJSON.errors;
+            $.each(errors, function (i, el) {
+                $('[data-id=' + el.field + '-error]').text(el.message).parent().addClass('has-error')
+            });
+        }
+    });
+}
+
+function fillWeatherData(data) {
+    var html = '<h1></h1>' +
+        '<img src="' + data.icon + '" alt="wetter-icon">' +
+        '<table>' +
+        '<tr>' +
+        '<td>Druck</td>' +
+        '<td>' + data.pres + '</td>' +
+        '</tr>' +
+        '<tr>' +
+        '<td>Temperatur</td>' +
+        '<td>' + data.temp + '</td>' +
+        '</tr>' +
+        '<tr>' +
+        '<td>Windgeschwindigkeit</td>' +
+        '<td>' + data.wvel + ' </td>' +
+        '</tr>' +
+        '<tr>' +
+        '<td>Windrichtung</td>' +
+        '<td>' + data.wdnm + '</td>' +
+        '</tr>' +
+        '</table>' +
+        '<img src="' + data.wurl + '" alt="wind-richtung">';
+    $('[data-id=data]').append(html);
+}
