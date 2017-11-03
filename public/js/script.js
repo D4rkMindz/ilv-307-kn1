@@ -289,15 +289,15 @@ function fillWeatherData(data) {
         '<table>' +
         '<tr>' +
         '<td>Druck</td>' +
-        '<td>' + data.pres + '</td>' +
+        '<td>' + data.pres + ' hPa</td>' +
         '</tr>' +
         '<tr>' +
         '<td>Temperatur</td>' +
-        '<td>' + data.temp + '</td>' +
+        '<td>' + data.temp + ' °C</td>' +
         '</tr>' +
         '<tr>' +
         '<td>Windgeschwindigkeit</td>' +
-        '<td>' + data.wvel + ' </td>' +
+        '<td>' + data.wvel + ' km/h</td>' +
         '</tr>' +
         '<tr>' +
         '<td>Windrichtung</td>' +
