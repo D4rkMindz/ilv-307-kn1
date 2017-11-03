@@ -17,14 +17,14 @@ class WeatherController extends AppController
         $weatherService = new WeatherService();
         $weatherImages = $weatherService->getImages();
 
-//        $windService = new WindService();
-//        $windImages = $windService->getImages();
-//
-//        $humidityService = new HumidityService();
-//        $humidityImages = $humidityService->getImages();
-//
-//        $temperatureService = new TemperatureService();
-//        $temperatureImages = $temperatureService->getImages();
+        $windService = new WindService();
+        $windImages = $windService->getImages();
+
+        $humidityService = new HumidityService();
+        $humidityImages = $humidityService->getImages();
+
+        $temperatureService = new TemperatureService();
+        $temperatureImages = $temperatureService->getImages();
 
         $shoppingCartService = new ShoppingCartService($this->session);
         $count = $shoppingCartService->getCount();
