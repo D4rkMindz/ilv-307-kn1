@@ -10,7 +10,8 @@ Afterwards you need to type
 $ composer install
 ```
 Afterwards you need to rename /config/env.example.php to /config/env.php. In the env.php file is the configuration for the database.
-The next task is to configure the mailing system. For that, you need a [DEBUGMAIL Account](https://debugmail.io). You need to create a new project (within debugmail) and fill the provided data into the variables in the env.php file. The "to" value is the your email. The "from" value can be any email, but i recommend it to take yours (this email will be displayed in the email).
+The next task is to configure the mailing system. For that, you need a [DEBUGMAIL Account](https://debugmail.io). You need to create a new project (within debugmail) and fill the provided data into the variables in the env.php file. The "to" value is the your email. The "from" value can be any email, but i recommend it to take yours (this email will be displayed in the email). 
+It is also required to add your OPEN Weather Map API key to $env['weather']['key'];
 
 If you want to use the tests or other nice features, you need to install [Apache Ant](https://lernjournal.d4rkmindz.ch/doku.php/installationen:ant "Documented Ant installation")
 
