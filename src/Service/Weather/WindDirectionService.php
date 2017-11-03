@@ -22,15 +22,6 @@ class WindDirectionService
         $file = __DIR__ . '/../../../public/' . $public;
         if (!is_file($file)) {
             $this->image = imagecreatefrompng(__DIR__ . '/../../../files/weather/wind-dir.png');
-//            imagealphablending($this->image, false);
-//
-//            imagesavealpha($this->image, true);
-//            $arrow = imagecreatefrompng(__DIR__ . '/../../../files/weather/arrow.png');
-//            $angle = ($deg - 360) * -1;
-//            imagesavealpha($arrow, true);
-//            $transparency = imagecolorallocatealpha($arrow, 0, 0, 0, 127);
-//            $arrow = imagerotate($arrow, $angle, $transparency);
-
             $arrow = imagecreatefrompng(__DIR__ . '/../../../files/weather/arrow.png');
             $angle = ($deg - 360) * -1;
             imagesavealpha($arrow, true);

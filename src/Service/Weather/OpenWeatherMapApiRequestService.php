@@ -12,11 +12,11 @@ class OpenWeatherMapApiRequestService
      * @param string $url
      * @return mixed
      */
-    public static function getCities()
+    public static function getCities($forceReload)
     {
         $cities = config()->get('weather.cities');
         $jsonFile = __DIR__ . '/../../../files/' . date('Y-m-d_H') . '.json';
-        if (is_file($jsonFile)) {
+        if (is_file($jsonFile) && !$forceReload) {
             $data = json_decode(file_get_contents($jsonFile), true);
             return $data;
         }
@@ -27,8 +27,7 @@ class OpenWeatherMapApiRequestService
             $data[] = self::curl($url);
         }
 
-        $json = json_encode($data);
-        file_put_contents($jsonFile, $json);
+        file_put_contents($jsonFile, json_encode($data));
         return $data;
     }
 
@@ -41,20 +40,11 @@ class OpenWeatherMapApiRequestService
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         $data = curl_exec($ch);
         curl_close($ch);
-        return $data;
+        return json_decode($data, true);
     }
 
-    public static function get($url, $tag)
+    public static function get($url)
     {
-        $jsonFile = __DIR__ . '/../../../files/citydata/' . date('Y-m-d_H') . $tag . '.json';
-        if (is_file($jsonFile)) {
-            $data = json_decode(file_get_contents($jsonFile), true);
-            return $data;
-        }
-        $json = self::curl($url);
-
-        $data = json_decode($json, true);
-        file_put_contents($jsonFile, $json);
-        return $data;
+        return self::curl($url);
     }
 }

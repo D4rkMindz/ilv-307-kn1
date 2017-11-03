@@ -1,4 +1,4 @@
-# WEB APPLICAITION TEMPLATE
+# WEB APPLICATION TEMPLATE
 
 This project is created in educational course as exam. This application won't be developed any further.
 
@@ -63,3 +63,16 @@ You can edit the /files/produkte.csv file to update your product data.
  _t=3 => forcereload temperature
  
  _t=4 => forcereload wind
+
+## Add new location to weather map
+Just edit the $config['weather']['cities'] array in the /config/config.php file and set following values:
+```
+'city_name_in_the_api'=>[
+   'name' => 'city_name_in_the_api', // valid city name from the openweathermap.org API
+   'x' => '300', // X position on the image
+   'y' => '350', // Y position on the image
+],
+```
+Now reload your /wetter page with the "_r=1" parameter (/wetter?_r=1)
+ 
+Enjoy :)

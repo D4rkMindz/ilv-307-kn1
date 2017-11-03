@@ -79,6 +79,11 @@ $config['weather']['cities'] = [
         'x' => 650,
         'y' => 150,
     ],
+    'Luzern'=> [
+        'name' => 'Luzern',
+        'x' => 590,
+        'y' => 280,
+    ],
     'Bern' => [
         'name' => 'Bern',
         'x' => 400,

@@ -255,6 +255,7 @@ function activateImage(page, prefix, context) {
 
 function getCityData(context) {
     showLoader();
+    $('[data-id=data]').empty();
     var $this = $(context);
     var parent = $this.parent();
     $('.has-error').removeClass('has-error');
@@ -284,7 +285,7 @@ function getCityData(context) {
 
 function fillWeatherData(data) {
     var html = '<h1></h1>' +
-        '<img src="' + data.icon + '" alt="wetter-icon">' +
+        '<p>Wetter: </p><img src="' + data.icon + '" alt="wetter-icon">' +
         '<table>' +
         '<tr>' +
         '<td>Druck</td>' +

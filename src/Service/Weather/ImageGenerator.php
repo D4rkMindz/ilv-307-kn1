@@ -34,7 +34,7 @@ abstract class ImageGenerator
                     rrmdir($dir . $d);
                 }
             }
-            $this->loadData()
+            $this->loadData($forceReload)
                 ->generate();
         }
         $this->images = $this->read();
@@ -55,9 +55,9 @@ abstract class ImageGenerator
 
     protected abstract function generate();
 
-    protected function loadData()
+    protected function loadData($forceReload)
     {
-        $this->data = OpenWeatherMapApiRequestService::getCities();
+        $this->data = OpenWeatherMapApiRequestService::getCities($forceReload);
         return $this;
     }
 

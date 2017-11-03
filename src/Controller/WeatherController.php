@@ -96,12 +96,12 @@ class WeatherController extends AppController
             return $this->json($validationContext->toArray(), 422);
         }
         $url = 'weather?q=' . $data['city'] . '&units=metric';
-        $data = OpenWeatherMapApiRequestService::get($url, strtolower($data['city']));
+        $data = OpenWeatherMapApiRequestService::get($url);
 
         if ($data['cod'] === 200) {
             $windDirectionService = new WindDirectionService();
             $data = CityService::format($data);
-            $data['wurl'] = $windDirectionService->create($data['wdir']);
+            $data['wurl'] = $windDirectionService->create($data['wdir']) . '?' . microtime(true);
             $status = 200;
         } else {
             $validationContext->setError('city', 'Stadt existiert nicht');
