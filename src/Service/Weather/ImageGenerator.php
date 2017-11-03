@@ -13,9 +13,6 @@ abstract class ImageGenerator
     protected $image;
     protected $outputdir;
 
-
-    protected abstract function generate();
-
     protected function check($forceReload = false)
     {
         $dir = __DIR__ . '/../../../public/images/' . $this->outputdir . '/';
@@ -33,7 +30,7 @@ abstract class ImageGenerator
         }
         if ($now > $old || $forceReload) {
             if (!empty($dirs)) {
-                foreach ($dirs as $d){
+                foreach ($dirs as $d) {
                     rrmdir($dir . $d);
                 }
             }
@@ -42,30 +39,6 @@ abstract class ImageGenerator
         }
         $this->images = $this->read();
         return;
-    }
-
-    protected function generateImage($date)
-    {
-        $dir = date('Y-m-d_H');
-        $d = __DIR__ . '/../../../public/images/' . $this->outputdir . '/' . $dir;
-        if (!is_dir($d)) {
-            mkdir($d);
-        }
-        $file = $d . '/' . $date . '.png';
-        imagepng($this->image, $file);
-    }
-
-    protected function read()
-    {
-        $dir = __DIR__ . '/../../../public/images/weather/';
-        $dirs = $this->scandir($dir);
-        rsort($dirs);
-        $images = array_diff(scandir($dir . '/' . $dirs[0]), ['.', '..']);
-        foreach ($images as $key => $image) {
-            $images[$key] = 'images/' . $this->outputdir . '/' . $dirs[0] . '/' . $image;
-        }
-        $images = array_values($images);
-        return $images;
     }
 
     protected function scandir($dir)
@@ -80,28 +53,37 @@ abstract class ImageGenerator
         return $return;
     }
 
+    protected abstract function generate();
 
     protected function loadData()
     {
-        $this->cities = config()->get('weather.cities');
-        $jsonFile = __DIR__ . '/../../../files/' . date('Y-m-d_H') . '.json';
-        $data = json_decode(file_get_contents($jsonFile), true);
-        if (!empty($data)) {
-            $this->data = $data;
-            return $this;
-        }
-        foreach ($this->cities as $city) {
-            $this->data[] = $this->getData($city['name']);
-        }
-        $json = json_encode($this->data);
-        file_put_contents($jsonFile, $json);
+        $this->data = OpenWeatherMapApiRequestService::getCities();
         return $this;
     }
 
-    private function getData($location)
+
+    protected function read()
     {
-        $url = 'forecast/daily?q=' . $location . '&units=metric';
-        return OpenWeatherMapApiRequestService::get($url);
+        $dir = __DIR__ . '/../../../public/images/weather/';
+        $dirs = $this->scandir($dir);
+        rsort($dirs);
+        $images = array_diff(scandir($dir . '/' . $dirs[0]), ['.', '..']);
+        foreach ($images as $key => $image) {
+            $images[$key] = 'images/' . $this->outputdir . '/' . $dirs[0] . '/' . $image;
+        }
+        $images = array_values($images);
+        return $images;
+    }
+
+    protected function generateImage($date)
+    {
+        $dir = date('Y-m-d_H');
+        $d = __DIR__ . '/../../../public/images/' . $this->outputdir . '/' . $dir;
+        if (!is_dir($d)) {
+            mkdir($d);
+        }
+        $file = $d . '/' . $date . '.png';
+        imagepng($this->image, $file);
     }
 
 }

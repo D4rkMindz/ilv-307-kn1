@@ -28,6 +28,7 @@ class WindService extends ImageGenerator
      */
     protected function generate()
     {
+        $this->cities = config()->get('weather.cities');
         for ($i = 0; $i < 7; $i++) {
             $date = $i;
             $this->image = imagecreatefrompng(__DIR__ . '/../../../files/weather/base.png');

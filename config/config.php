@@ -86,7 +86,7 @@ $config['weather']['cities'] = [
     ],
     'Genève' => [
         'name' => 'Genève',
-        'x' => 50,
+        'x' => 80,
         'y' => 580,
     ],
     'Chur' => [
