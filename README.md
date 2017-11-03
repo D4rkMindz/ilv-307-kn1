@@ -16,6 +16,8 @@ If you want to use the tests or other nice features, you need to install [Apache
 
 Many files (e.g. phinx.php) are not required for this project, but they are not removed because of the development "usage".
 
+Please install all fonts in the /resources/fonts folder on your computer (Windows: Double-click and install in the top left corner).
+
 Tests (requires database configuration in /config/env.php)
 ````
 $ ant phpunit

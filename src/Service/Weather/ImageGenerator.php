@@ -4,19 +4,48 @@
 namespace App\Service\Weather;
 
 
+use DateTime;
+
 abstract class ImageGenerator
 {
     protected $data;
     protected $cities;
     protected $image;
+    protected $outputdir;
 
 
     protected abstract function generate();
 
+    protected function check()
+    {
+        $dir = __DIR__ . '/../../../public/images/' . $this->outputdir . '/';
+        if (!is_dir($dir)) {
+            mkdir($dir);
+        }
+        $dirs = $this->scandir($dir);
+        rsort($dirs);
+        $date = date('Y-m-d_H');
+        $now = DateTime::createFromFormat('Y-m-d_H', $date);
+        if (!empty($dirs)) {
+            $old = DateTime::createFromFormat('Y-m-d_H', $dirs[0]);
+        } else {
+            $old = false;
+        }
+        if ($now > $old) {
+            if (!empty($dirs)) {
+                rmdir($dir . $dirs[0]);
+            }
+            $this->loadData()
+                ->generate();
+        }
+        $this->images = $this->read();
+
+    }
+
     protected function generateImage($date)
     {
         $dir = date('Y-m-d_H');
-        $d = __DIR__ . '/../../../public/images/weather/' . $dir;
+        $d = __DIR__ . '/../../../public/images/' . $this->outputdir . '/' . $dir;
         if (!is_dir($d)) {
             mkdir($d);
         }
@@ -31,7 +60,7 @@ abstract class ImageGenerator
         rsort($dirs);
         $images = array_diff(scandir($dir . '/' . $dirs[0]), ['.', '..']);
         foreach ($images as $key => $image) {
-            $images[$key] = 'images/weather/' . $dirs[0] . '/' . $image;
+            $images[$key] = 'images/' . $this->outputdir . '/' . $dirs[0] . '/' . $image;
         }
         $images = array_values($images);
         return $images;

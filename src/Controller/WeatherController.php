@@ -30,9 +30,9 @@ class WeatherController extends AppController
         $count = $shoppingCartService->getCount();
         $viewData = [
             'weather_images'=> $weatherImages,
-//            'wind_images' => $windImages,
-//            'humidity_images'=> $humidityImages,
-//            'temperature_images'=> $temperatureImages,
+            'wind_images' => $windImages,
+            'humidity_images'=> $humidityImages,
+            'temperature_images'=> $temperatureImages,
             'count' => $count,
             'title' => 'Müller\'s Hofladen Wetter',
             'abbr' => 'Wetter',

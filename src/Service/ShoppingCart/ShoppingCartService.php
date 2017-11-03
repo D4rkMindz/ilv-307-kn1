@@ -182,11 +182,13 @@ class ShoppingCartService
     {
         $res = [];
         $def = [];
-        foreach ($sorted as $key => $value) {
-            $res[$value['id']] += $value['count'];
-        }
-        foreach ($res as $key => $value) {
-            $def[] = ['id' => $key, 'count' => $value];
+        if (!empty($sorted)){
+            foreach ($sorted as $key => $value) {
+                $res[$value['id']] += $value['count'];
+            }
+            foreach ($res as $key => $value) {
+                $def[] = ['id' => $key, 'count' => $value];
+            }
         }
         $sorted = $def;
     }
